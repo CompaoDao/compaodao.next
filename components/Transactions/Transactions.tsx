@@ -36,14 +36,14 @@ const TransactionsTable = () => {
           <td className="content_table-fields-field">Payment</td>
           <td className="content_table-fields-field">Invoice</td>
         </tr>
-        {/* {samplePayrollData.map(payroll => (
-          <tr key={payroll.id} className="content_table-row">
-            <td className="content_table-row-standard">{payroll.position}</td>
-            <td className="content_table-row-standard">{payroll.name}</td>
-            <td className="content_table-row-standard">{payroll.compensation}</td>
-            <td className="content_table-row-remove" onClick={() => console.log(`Click remove id: ${payroll.id}`)}>Remove</td>
+        {sampleTransactionsData.map(transaction => (
+          <tr key={transaction.id} className="content_table-row">
+            <td className="content_table-row-standard">{transaction.name}</td>
+            <td className="content_table-row-standard">{`${transaction.dateStart}-${transaction.dateEnd}`}</td>
+            <td className="content_table-row-standard">{transaction.payment}</td>
+            <td className="content_table-row-download" onClick={() => console.log(`Click download id: ${transaction.invoiceUrl}`)}>Download</td>
           </tr>
-        ))} */}
+        ))}
       </table>
     )
 }

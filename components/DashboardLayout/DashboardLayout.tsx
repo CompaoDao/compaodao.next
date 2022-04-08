@@ -5,9 +5,10 @@ import LogoutIcon from '../../assets/icons/LogoutIcon';
 import PayrollIcon from '../../assets/icons/PayrollIcon';
 import ProfileIcon from '../../assets/icons/ProfileIcon';
 import TransactionsIcon from '../../assets/icons/TransactionsIcon';
+import { Menu } from '../../pages/dashboard';
 import Button from '../Button/Button';
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = ({ menu, setMenu, children }) => {
   return (
     <div className="container">
       <div className="left_panel">
@@ -15,7 +16,14 @@ const DashboardLayout = ({ children }) => {
           <LogoIcon />
         </div>
         <div className="left_panel-center">
-          <div className="left_panel-center-menu">
+          <div
+            className="left_panel-center-menu"
+            style={{
+              backgroundColor: menu === Menu.DASHBOARD ? '#41A8F2' : 'white',
+              color: menu === Menu.DASHBOARD ? 'white' : 'black'
+            }}
+            onClick={() => setMenu(Menu.DASHBOARD)}
+          >
             <div
               className="left_panel-center-menu-icon"
             >
@@ -25,7 +33,14 @@ const DashboardLayout = ({ children }) => {
               Dashboard
             </div>
           </div>
-          <div className="left_panel-center-menu">
+          <div
+            className="left_panel-center-menu"
+            style={{
+              backgroundColor: menu === Menu.PAYROLL ? '#41A8F2' : 'white',
+              color: menu === Menu.PAYROLL ? 'white' : 'black'
+            }}
+            onClick={() => setMenu(Menu.PAYROLL)}
+          >
             <div className="left_panel-center-menu-icon">
               <PayrollIcon color="white" />
             </div>
@@ -33,7 +48,14 @@ const DashboardLayout = ({ children }) => {
               Payroll
             </div>
           </div>
-          <div className="left_panel-center-menu">
+          <div
+            className="left_panel-center-menu"
+            style={{
+              backgroundColor: menu === Menu.TRANSACTIONS ? '#41A8F2' : 'white',
+              color: menu === Menu.TRANSACTIONS ? 'white' : 'black'
+            }}
+            onClick={() => setMenu(Menu.TRANSACTIONS)}
+          >
             <div className="left_panel-center-menu-icon">
               <TransactionsIcon color="white" />
             </div>

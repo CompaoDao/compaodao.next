@@ -43,7 +43,6 @@
      }
       &-menu:hover {
         background-color: $primary-dark;
-        color: white;
       }
 
    }
@@ -141,12 +140,10 @@
     border-bottom: 1px solid $table-line;
 
     &-standard {
-      width: 110px;
       flex: 1;
     }
     &-remove{
       flex: 1;
-      width: 110px;
       color: $danger;
       cursor: pointer;
     }
@@ -155,8 +152,9 @@
     }
 
     &-download {
-      cursor: pointer;
+      flex: 1;
       color: $primary;
+      cursor: pointer;
     }
 
     &-download {
