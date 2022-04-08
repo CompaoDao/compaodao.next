@@ -1,100 +1,127 @@
-import React, {  useState } from 'react';
-import DashboardIcon from '../../assets/icons/DashboardIcon';
-import LogoIcon from '../../assets/icons/LogoIcon';
-import LogoutIcon from '../../assets/icons/LogoutIcon';
-import PayrollIcon from '../../assets/icons/PayrollIcon';
-import ProfileIcon from '../../assets/icons/ProfileIcon';
-import TransactionsIcon from '../../assets/icons/TransactionsIcon';
-import { Menu } from '../../pages/dashboard';
-import Button from '../Button/Button';
+import React, { useEffect, useState } from "react";
+import DashboardIcon from "../../assets/icons/DashboardIcon";
+import LogoIcon from "../../assets/icons/LogoIcon";
+import LogoutIcon from "../../assets/icons/LogoutIcon";
+import PayrollIcon from "../../assets/icons/PayrollIcon";
+import ProfileIcon from "../../assets/icons/ProfileIcon";
+import TransactionsIcon from "../../assets/icons/TransactionsIcon";
+import { Menu } from "../../pages/dashboard";
+import Button from "../Button/Button";
 
 const DashboardLayout = ({ menu, setMenu, children }) => {
+  useEffect(() => {
+    function handleStorage(e: Event) {
+      console.log("hufenhi", e);
+      // When local storage changes, dump the list to
+      // the console.
+      typeof window !== "undefined" &&
+        console.log(
+          "hufen",
+          window.sessionStorage.getItem("skillWallet") &&
+            JSON.parse(window.sessionStorage.getItem("skillWallet") as string)
+              .partnersAgreementKey.communityAddress
+        );
+      return null;
+    }
+    console.log("hufen", typeof window !== "undefined");
+    window.onchange = (e) => handleStorage(e);
+    window.on;
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
+  console.log("hufenreload");
   return (
     <div className="container">
       <div className="left_panel">
-        <div className="left_panel-top">
+        <div
+          className="left_panel-top"
+          onClick={() => {
+            console.log("hufenclicked");
+            window.localStorage.setItem("my-key", "my-value");
+          }}
+        >
           <LogoIcon />
         </div>
         <div className="left_panel-center">
           <div
             className="left_panel-center-menu"
             style={{
-              backgroundColor: menu === Menu.DASHBOARD ? '#41A8F2' : 'white',
-              color: menu === Menu.DASHBOARD ? 'white' : 'black'
+              backgroundColor: menu === Menu.DASHBOARD ? "#41A8F2" : "white",
+              color: menu === Menu.DASHBOARD ? "white" : "black",
             }}
             onClick={() => setMenu(Menu.DASHBOARD)}
           >
-            <div
-              className="left_panel-center-menu-icon"
-            >
+            <div className="left_panel-center-menu-icon">
               <DashboardIcon color="white" />
             </div>
-            <div className="left_panel-center-menu-text">
-              Dashboard
-            </div>
+            <div className="left_panel-center-menu-text">Dashboard</div>
           </div>
           <div
             className="left_panel-center-menu"
             style={{
-              backgroundColor: menu === Menu.PAYROLL ? '#41A8F2' : 'white',
-              color: menu === Menu.PAYROLL ? 'white' : 'black'
+              backgroundColor: menu === Menu.PAYROLL ? "#41A8F2" : "white",
+              color: menu === Menu.PAYROLL ? "white" : "black",
             }}
             onClick={() => setMenu(Menu.PAYROLL)}
           >
             <div className="left_panel-center-menu-icon">
               <PayrollIcon color="white" />
             </div>
-            <div className="left_panel-center-menu-text">
-              Payroll
-            </div>
+            <div className="left_panel-center-menu-text">Payroll</div>
           </div>
           <div
             className="left_panel-center-menu"
             style={{
-              backgroundColor: menu === Menu.TRANSACTIONS ? '#41A8F2' : 'white',
-              color: menu === Menu.TRANSACTIONS ? 'white' : 'black'
+              backgroundColor: menu === Menu.TRANSACTIONS ? "#41A8F2" : "white",
+              color: menu === Menu.TRANSACTIONS ? "white" : "black",
             }}
             onClick={() => setMenu(Menu.TRANSACTIONS)}
           >
             <div className="left_panel-center-menu-icon">
               <TransactionsIcon color="white" />
             </div>
-            <div className="left_panel-center-menu-text">
-              Transactions
-            </div>
+            <div className="left_panel-center-menu-text">Transactions</div>
           </div>
         </div>
         <div className="left_panel-bottom">
-          <div className="left_panel-bottom-icon">
+          {/*<div className="left_panel-bottom-icon">
             <ProfileIcon />
-          </div>
+          </div>*/}
           <div className="left_panel-bottom-wallet">
-            0x2rnv...2359
+            {/*@ts-ignore*/}
+            <sw-auth
+              partner-key="f407f2a2b646a7940f159ce27c2c9427c97dc853"
+              use-dev="true"
+            >
+              {/*@ts-ignore*/}
+            </sw-auth>
           </div>
-          <div className="left_panel-bottom-logout" onClick={() => console.log('Handle Logout')}>
+          {/*<div
+            className="left_panel-bottom-logout"
+            onClick={() => console.log("Handle Logout")}
+          >
             <LogoutIcon />
-          </div>
+        </div>*/}
         </div>
       </div>
 
       <div className="right_panel">
         <div className="right_panel-header">
-          <div className="right_panel-header-title">
-            Payroll
-          </div>
+          <div className="right_panel-header-title">Payroll</div>
           <div className="right_panel-header-button">
-            <Button onClick={() => console.log('test')}>+ Add new employee</Button>
+            <Button onClick={() => console.log("test")}>
+              + Add new employee
+            </Button>
           </div>
         </div>
         <div className="right_panel-content-container">
           <div className="right_panel-content">
-            {children}
+            {true ? children : "Connect your wallet"}
           </div>
         </div>
-
       </div>
     </div>
   );
-}
+};
 
 export default DashboardLayout;
