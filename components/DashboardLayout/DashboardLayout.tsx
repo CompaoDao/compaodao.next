@@ -6,6 +6,7 @@ import PayrollIcon from '../../assets/icons/PayrollIcon';
 import ProfileIcon from '../../assets/icons/ProfileIcon';
 import TransactionsIcon from '../../assets/icons/TransactionsIcon';
 import { Menu } from '../../pages/dashboard';
+import { truncateWallet } from '../../util/truncateWallet';
 import Button from '../Button/Button';
 
 const DashboardLayout = ({ menu, setMenu, children }) => {
@@ -69,7 +70,7 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
             <ProfileIcon />
           </div>
           <div className="left_panel-bottom-wallet">
-            0x2rnv...2359
+            {truncateWallet('0x24A2d17147F177F5a5d3e50C7717eC58Ccf4458D', 4)}
           </div>
           <div className="left_panel-bottom-logout" onClick={() => console.log('Handle Logout')}>
             <LogoutIcon />
@@ -80,7 +81,12 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
       <div className="right_panel">
         <div className="right_panel-header">
           <div className="right_panel-header-title">
-            Payroll
+            {menu === Menu.DASHBOARD
+              ? 'Dashboard'
+              : menu === Menu.PAYROLL
+                ? 'Payroll'
+                : 'Transactions'
+            }
           </div>
           <div className="right_panel-header-button">
             <Button onClick={() => console.log('test')}>+ Add new employee</Button>
