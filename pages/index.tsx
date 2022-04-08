@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect } from "react";
-import styles from "../styles/Home.module.css";
 import * as ethers from "ethers";
 import { getAllMembers } from "../util/skillwallet";
 import { postPayrollToIPFS } from "../util/IPFS";
