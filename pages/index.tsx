@@ -5,10 +5,12 @@ import { useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import * as ethers from "ethers";
 import { getAllMembers } from "../util/skillwallet";
+import { postPayrollToIPFS } from "../util/IPFS";
 const Home: NextPage = () => {
   console.log("sessionstorage");
   const communityAddress =
     typeof window !== "undefined" &&
+    window.sessionStorage.getItem("skillWallet") &&
     JSON.parse(window.sessionStorage.getItem("skillWallet") as string)
       .partnersAgreementKey.communityAddress;
   useEffect(() => {
@@ -46,7 +48,7 @@ const Home: NextPage = () => {
         <div
           className={styles.grid}
           onClick={() => {
-            getAllMembers(communityAddress);
+            postPayrollToIPFS("0xxx", "1000", "today");
           }}
         >
           <a className={styles.card}>
