@@ -33,7 +33,6 @@ const Home: NextPage = () => {
   });
 
   //isCoreTeamMember -> can edit hires or not
-  const notify = () => toast("Wow so easy!");
 
   return (
     <div>
@@ -48,9 +47,9 @@ const Home: NextPage = () => {
             postPayrollToIPFS("0xxx", "1000", "today");
           }}
         />
-
-        <button onClick={notify}>Notify!</button>
         <ToastContainer />
+        <button onClick={ () => toast.success("Success")}>Success!</button>
+        <button onClick={ () => toast.error("Error!")}>Error!</button>
       </main>
     </div>
   );
