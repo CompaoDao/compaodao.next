@@ -25,7 +25,7 @@ async function getTransactions(currentUser: user) {
         member.id,
         yesterday,
         new Date(),
-        member.position != "Core Team"
+        member.position == "Core Team"
       );
       console.log("payment", payment.toString());
       return {
@@ -40,6 +40,7 @@ interface transaction {
   id: string;
   name: string;
   date: number;
+  position: string;
   payment: string;
 }
 const TransactionsTable = () => {
@@ -55,59 +56,62 @@ const TransactionsTable = () => {
           setTransactionData(transaction);
           setIsLoading(false);
         })
-        .catch(err => {
+        .catch((err) => {
           toast.error(`${err.message}`);
           setIsLoading(false);
-        })
+        });
     }
   }, [currentUser]);
 
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
-
 
   return (
     <>
-      {transactionData?.length
-        ? (
-          <table className="content_table">
-            <tr className="content_table-fields">
-              <td className="content_table-fields-field">Name</td>
-              <td className="content_table-fields-field">Date</td>
-              <td className="content_table-fields-field">Paid (over the whole day)</td>
-              <td className="content_table-fields-field">Invoice</td>
-            </tr>
-            {transactionData.map((transaction) => (
-              <tr key={transaction.id} className="content_table-row">
-                <td className="content_table-row-standard">{transaction.name}</td>
-                <td className="content_table-row-standard">{transaction.date}</td>
-                <td className="content_table-row-standard">
-                  {transaction.payment}
-                </td>
-                <td
-                  className="content_table-row-download"
-                  onClick={() =>
-                    postPayrollToIPFS(
-                      transaction.id,
-                      transaction.payment,
-                      transaction.date,
-                      transaction.name
-                    ).then((hash) => {
-                      console.log("Open", `https://ipfs.io/ipfs/${hash}`);
-                    })
-                  }
-                >
-                  Create Payslip
-                </td>
-              </tr>
-            ))}
-          </table>
-        )
-        : (
-          <div>No data available</div>
-        )
-      }
+      {transactionData?.length ? (
+        <table className="content_table">
+          <tr className="content_table-fields">
+            <td className="content_table-fields-field">Name</td>
+            <td className="content_table-fields-field">Date</td>
+            <td className="content_table-fields-field">Paid (wei/day)</td>
+            <td className="content_table-fields-field">Invoice</td>
+          </tr>
+          {transactionData.map(
+            (transaction) =>
+              transaction.position != "Core Team" && (
+                <tr key={transaction.id} className="content_table-row">
+                  <td className="content_table-row-standard">
+                    {transaction.name}
+                  </td>
+                  <td className="content_table-row-standard">
+                    {transaction.date}
+                  </td>
+                  <td className="content_table-row-standard">
+                    {transaction.payment}
+                  </td>
+                  <td
+                    className="content_table-row-download"
+                    onClick={() =>
+                      postPayrollToIPFS(
+                        transaction.id,
+                        transaction.payment,
+                        transaction.date,
+                        transaction.name
+                      ).then((hash) => {
+                        window.open(`https://ipfs.io/ipfs/${hash}`);
+                      })
+                    }
+                  >
+                    Create Payslip
+                  </td>
+                </tr>
+              )
+          )}
+        </table>
+      ) : (
+        <div>No data available</div>
+      )}
     </>
   );
 };
