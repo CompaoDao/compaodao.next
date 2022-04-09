@@ -34,8 +34,7 @@ export async function getTokenIdByAddress(address: string) {
   return tokenId;
 }
 export async function getUserByTokenId(tokenId: string) {
-  console.log("token", tokenId);
-  const url = `https://dev-api.skillwallet.id/api/skillwallet?tokenId=${tokenId}`;
+  const url = `https://api.skillwallet.id/api/skillwallet?tokenId=${tokenId}`;
   const resp = await axios.get(url);
   return resp.data;
 }
