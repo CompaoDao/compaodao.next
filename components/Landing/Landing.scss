@@ -1,0 +1,135 @@
+.landing {
+  &-container {
+
+  }
+  &-header {
+    display: flex;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #E5E5E5;
+
+    &-logo {
+      margin-left: 100px;
+      padding-top: 7px;
+    }
+
+    &-wallet {
+      margin-left: auto;
+      margin-right: 100px;
+      width: 150px;
+      text-align: center;
+    }
+  }
+
+  &-jumbotron {
+    background-color: #F9FCFF;
+    &-container {
+      max-width: 800px;
+      padding-top: 100px;
+      padding-bottom: 100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    &-main {
+      font-weight: 600;
+      font-size: 64px;
+      line-height: 125%;
+      text-align: center;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    &-description {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 150%;
+      text-align: center;
+      color: #8F8F8F;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 20px;
+    }
+    &-buttons {
+      width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 20px;
+      &-wallet {
+        width: 150px;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
+
+  &-how {
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 150%;
+    text-align: center;
+    margin-top: 50px;
+  }
+
+  &-point {
+    text-align: center;
+    &-number {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 150%;
+      text-transform: uppercase;
+      color: #B0B0B0;
+      margin-top: 50px;
+    }
+    &-description {
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 150%;
+      color: #161616;
+      margin-top: 8px;
+    }
+    &-image {
+      margin-top: 80px;
+      max-width: 500px;
+    }
+  }
+
+  &-bottom {
+    background-color: #F9FCFF;
+    margin-top: 50px;
+    padding-top: 100px;
+    padding-bottom: 100px;
+
+    &-title {
+      font-weight: 500;
+      font-size: 48px;
+      line-height: 150%;
+      text-transform: capitalize;
+      color: #000000;
+      text-align: center;
+    }
+  }
+
+  &-footer {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #D4D4D4;
+    display: flex;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-top: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+
+    &-left {
+      margin-left: 200px;
+    }
+
+    &-right {
+      margin-left: auto;
+      margin-right: 200px;
+    }
+  }
+}

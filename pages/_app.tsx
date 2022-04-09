@@ -1,16 +1,17 @@
 import "../styles/index.scss";
 import { AppProps } from "next/app";
-import { InitSwAuth } from "@skill-wallet/auth";
-import { useEffect, useState } from "react";
-import Button from "../components/Button/Button";
-//Skill wallet community id: f407f2a2b646a7940f159ce27c2c9427c97dc853
+import { ToastContainer, toast } from 'react-toastify';
+
 function MyApp({ Component, pageProps }: AppProps) {
-  /*const [communityAddress, setCommunityAddress] = useState(
-    typeof window !== "undefined" &&
-      window.sessionStorage.getItem("skillWallet") &&
-      JSON.parse(window.sessionStorage.getItem("skillWallet") as string)
-        .partnersAgreementKey.communityAddress
-  );*/
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <ToastContainer />
+      {/* TODO: Implement toast in this way for API requests */}
+      {/* <button onClick={ () => toast.success("Success")}>Success!</button>
+      <button onClick={ () => toast.error("Error!")}>Error!</button> */}
+
+      <Component {...pageProps} />
+    </>
+  );
 }
 export default MyApp;
