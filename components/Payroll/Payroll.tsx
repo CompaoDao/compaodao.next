@@ -42,12 +42,8 @@ const PayrollTable = () => {
         setInitiliazing(false);
       });
     }
-<<<<<<< HEAD
-  }, [currentUser, initializing, loadingData]);
-=======
-  }, [currentUser]);
+  }, [currentUser, initializing]);
 
->>>>>>> c280743669f4838eac6334966b509b919add3a47
   if (!initializing) {
     return (
       <table className="content_table">
