@@ -1,13 +1,9 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
+import React from "react";
 
 const Dashboard = () => {
-  const { currentUser } = useContext(AuthContext);
-  if (currentUser) {
-    return <div>DASHBOARD</div>;
-  } else {
-    return <div>CONNECT WALLET</div>;
-  }
+  return (
+    <div>DASHBOARD</div>
+  )
 };
 
 export default Dashboard;

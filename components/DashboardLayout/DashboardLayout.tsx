@@ -11,32 +11,6 @@ import Modal from "../Modal/Modal";
 
 const DashboardLayout = ({ menu, setMenu, children }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
-  // const [currentUser, setCurrentUser] = useState(undefined);
-
-  // useEffect(() => {
-  //   InitSwAuth();
-  // }, []);
-  // useEffect(() => {
-  //   typeof window !== undefined &&
-  //     setCurrentUser(
-  //       window.sessionStorage.getItem("skillWallet") &&
-  //         JSON.parse(window.sessionStorage.getItem("skillWallet") as string)
-  //     );
-  // }, [typeof window !== undefined]);
-  // useEffect(() => {
-  //   function handleStorage(e: Event) {
-  //     // When local storage changes, dump the list to
-  //     // the console.
-  //     setCurrentUser(
-  //       window.sessionStorage.getItem("skillWallet") &&
-  //         JSON.parse(window.sessionStorage.getItem("skillWallet") as string)
-  //     );
-  //     return null;
-  //   }
-  //   console.log("hufen", typeof window !== "undefined");
-  //   typeof window !== "undefined" &&
-  //     window.addEventListener("onSkillwalletLogin", handleStorage);
-  // });
 
   return (
     <>

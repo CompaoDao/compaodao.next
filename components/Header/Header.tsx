@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 const Header = () => {
   const router = useRouter();
-  const { setCurrentUser } = useContext(AuthContext);
+  const { currentUser, setCurrentUser } = useContext(AuthContext);
 
   useEffect(() => {
     InitSwAuth();
@@ -42,10 +42,18 @@ const Header = () => {
       window.addEventListener("onSkillwalletLogin", handleStorage);
   });
 
+  const handleLogoClick = () => {
+    if(currentUser) {
+      router.push("/dashboard");
+    } else {
+      router.push("/")
+    }
+  }
+
 
   return (
     <div className="landing-header">
-        <div className="landing-header-logo">
+        <div className="landing-header-logo" onClick={() => handleLogoClick()}>
           <LogoIcon />
         </div>
         <div className="landing-header-wallet">
