@@ -39,40 +39,42 @@ const PayrollEach = (payroll: { payroll: payroll }) => {
   console.log("cunfr", currentUser);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [tempCompensation, setTempCompensation] = useState("");
-  return (
-    <>
-      <Modal
-        modalIsOpen={modalIsOpen}
-        setIsOpen={setIsOpen}
-        recipient={payroll.payroll.id}
-        setTempCompensation={setTempCompensation}
-        currentCompensation={
-          tempCompensation != ""
-            ? tempCompensation
-            : payroll.payroll.compensation
-        }
-      />
-      <tr key={payroll.payroll.id} className="content_table-row">
-        <td className="content_table-row-standard">
-          {payroll.payroll.position}
-        </td>
-        <td className="content_table-row-standard">{payroll.payroll.name}</td>
-        <td className="content_table-row-standard">
-          {tempCompensation != ""
-            ? tempCompensation
-            : payroll.payroll.compensation}
-        </td>
-        {(currentUser! as any).isCoreTeamMember && (
-          <td
-            className="content_table-row-remove"
-            onClick={() => setIsOpen(true)}
-          >
-            Change salary
+  if (payroll.payroll.position != "Core Team")
+    return (
+      <>
+        <Modal
+          modalIsOpen={modalIsOpen}
+          setIsOpen={setIsOpen}
+          recipient={payroll.payroll.id}
+          setTempCompensation={setTempCompensation}
+          currentCompensation={
+            tempCompensation != ""
+              ? tempCompensation
+              : payroll.payroll.compensation
+          }
+        />
+        <tr key={payroll.payroll.id} className="content_table-row">
+          <td className="content_table-row-standard">
+            {payroll.payroll.position}
           </td>
-        )}
-      </tr>
-    </>
-  );
+          <td className="content_table-row-standard">{payroll.payroll.name}</td>
+          <td className="content_table-row-standard">
+            {tempCompensation != ""
+              ? tempCompensation
+              : payroll.payroll.compensation}
+          </td>
+          {currentUser && (currentUser! as any).isCoreTeamMember && (
+            <td
+              className="content_table-row-remove"
+              onClick={() => setIsOpen(true)}
+            >
+              Change salary
+            </td>
+          )}
+        </tr>
+      </>
+    );
+  else return null;
 };
 
 const PayrollTable = () => {
@@ -88,36 +90,34 @@ const PayrollTable = () => {
           setPayrollData(payroll);
           setIsLoading(false);
         })
-        .catch(err => {
+        .catch((err) => {
           toast.error(`${err.message}`);
           setIsLoading(false);
-        })
+        });
     }
   }, [currentUser]);
 
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
     <>
-      {payrollData?.length
-        ? (
+      {payrollData?.length ? (
         <table className="content_table">
           <tr className="content_table-fields">
             <td className="content_table-fields-field">Position</td>
             <td className="content_table-fields-field">Name</td>
             <td className="content_table-fields-field">Salary</td>
-          {(currentUser! as any).isCoreTeamMember && (
-            <td className="content_table-fields-field">Action</td>
-          )}
+            {(currentUser! as any).isCoreTeamMember && (
+              <td className="content_table-fields-field">Action</td>
+            )}
           </tr>
           {payrollData.map((payroll) => (
             <PayrollEach key={payroll.id} payroll={payroll} />
           ))}
         </table>
-        )
-      : (
+      ) : (
         <div>No data available</div>
       )}
     </>
