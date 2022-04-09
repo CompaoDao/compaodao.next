@@ -78,7 +78,7 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
                   + Add new employee
                 </Button>
               )}
-            </div>
+            </div>*/}
           </div>
           <div className="right_panel-content-container">
             <div className="right_panel-content">{children}</div>
