@@ -9,6 +9,13 @@ import { Menu } from "../../pages/dashboard";
 import Button from "../Button/Button";
 
 const DashboardLayout = ({ menu, setMenu, children }) => {
+  typeof window !== "undefined" &&
+    console.log(
+      "communityAddress",
+      window.sessionStorage.getItem("skillWallet") &&
+        JSON.parse(window.sessionStorage.getItem("skillWallet") as string)
+          .partnersAgreementKey.communityAddress
+    );
   useEffect(() => {
     function handleStorage(e: Event) {
       console.log("hufenhi", e);
@@ -25,11 +32,9 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
     }
     console.log("hufen", typeof window !== "undefined");
     window.onchange = (e) => handleStorage(e);
-    window.on;
     return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
-  console.log("hufenreload");
   return (
     <div className="container">
       <div className="left_panel">
