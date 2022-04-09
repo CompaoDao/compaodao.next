@@ -43,7 +43,8 @@ export const options = {
 
 const Dashboard = () => {
   const { currentUser } = useContext(AuthContext);
-  const [isLoading, setIsLoading] = useState(true);
+  const [flowLoading, setFlowLoading] = useState(true);
+  const [totalLoading, setTotalLoading] = useState(true);
   const [flow, setFlow] = useState([]);
   const [total, setTotal] = useState(0);
 
@@ -57,14 +58,16 @@ const Dashboard = () => {
   }, [currentUser]);
 
   const getTotalData = async () => {
+    setTotalLoading(true);
     const address = await getWalletAddress();
     const oneYearAgo = moment().subtract(1, 'year').format('YYYY-MM-DD');
     const totalData = Number(await getSumForPeriod(address, new Date(oneYearAgo), new Date(), isCoreTeamMember));
     setTotal(totalData);
+    setTotalLoading(false);
   }
 
   const getFlowData = async () => {
-    setIsLoading(true);
+    setFlowLoading(true);
     const address = await getWalletAddress();
     const flowData = isCoreTeamMember
       ? await getHourlyOutflow(address)
@@ -88,10 +91,10 @@ const Dashboard = () => {
     };
 
     setFlow(data);
-    setIsLoading(false);
+    setFlowLoading(false);
   };
 
-  if(isLoading) {
+  if(flowLoading || totalLoading) {
     return <Loading />
   }
 
