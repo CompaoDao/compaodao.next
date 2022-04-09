@@ -15,7 +15,6 @@ const Home: NextPage = () => {
     window.sessionStorage.getItem("skillWallet") &&
     JSON.parse(window.sessionStorage.getItem("skillWallet") as string)
       .partnersAgreementKey.communityAddress;
-
   //isCoreTeamMember -> can edit hires or not
 
   return (
