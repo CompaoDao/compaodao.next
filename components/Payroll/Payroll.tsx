@@ -50,9 +50,8 @@ const PayrollTable = () => {
       console.log("members", memberAddresses);
       // setPayrollData({});
     }
-    console.log("curret", currentUser!.partnersAgreementKey.communityAddress);
-    loadMembers();
-  }, []);
+    if (currentUser) loadMembers();
+  }, [currentUser]);
   if (!initializing) {
     return (
       <table className="content_table">
