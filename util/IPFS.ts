@@ -7,9 +7,10 @@ const JWT =
 export async function postPayrollToIPFS(
   wallet: string,
   amount: string,
-  date: string
+  month: number,
+  name: string
 ) {
-  const data = { wallet: wallet, amount: amount, date: date };
+  const data = { wallet: wallet, amount: amount, month: month, name: name };
   const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
   const resp = await axios.post(url, data, {
     headers: {
