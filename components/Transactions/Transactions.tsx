@@ -8,20 +8,30 @@ import {
   getMembersData,
   user,
 } from "../../util/skillwallet";
+import { getSumForPeriod } from "../../util/streams";
 
 async function getTransactions(currentUser: user) {
   const memberAddresses = await getAllMemberAddresses(
     currentUser!.partnersAgreementKey.communityAddress
   );
   const memberData = await getMembersData(memberAddresses);
-  const payment = ["??", "??", "??", "??"]; //await getComp(memberAddresses) TODO IMPLEMENT
-  return memberData.map((member, index) => {
-    return {
-      ...member,
-      payment: payment[index],
-      month: ((new Date().getMonth() - 1) % 12) + 1,
-    };
-  });
+  return Promise.all(
+    memberData.map(async (member, index) => {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const payment = await getSumForPeriod(
+        member.id,
+        yesterday,
+        new Date(),
+        member.position == "Core Team"
+      );
+      return {
+        ...member,
+        payment: payment,
+        month: ((new Date().getMonth() - 1) % 12) + 1,
+      };
+    })
+  );
 }
 interface transaction {
   id: string;

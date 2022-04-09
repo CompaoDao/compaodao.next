@@ -71,13 +71,13 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
                 ? "Salaries"
                 : "Payslips"}
             </div>
-            <div className="right_panel-header-button">
+            {/*<div className="right_panel-header-button">
               {menu === Menu.PAYROLL && (
                 <Button onClick={() => setIsOpen(true)}>
                   + Add new employee
                 </Button>
               )}
-            </div>
+            </div>*/}
           </div>
           <div className="right_panel-content-container">
             <div className="right_panel-content">{children}</div>
