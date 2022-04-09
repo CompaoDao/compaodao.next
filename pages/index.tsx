@@ -3,11 +3,9 @@ import Head from "next/head";
 import Image from "next/image";
 import { useEffect } from "react";
 import * as ethers from "ethers";
-import { getAllMembers } from "../util/skillwallet";
 import { postPayrollToIPFS } from "../util/IPFS";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import Landing from "../components/Landing/Landing";
-
 
 const Home: NextPage = () => {
   const communityAddress =
