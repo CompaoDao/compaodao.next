@@ -9,15 +9,21 @@ import {
   user,
 } from "../../util/skillwallet";
 import Modal from "../Modal/Modal";
+import { getFlowRate } from "../../util/superfluid";
 async function getPayroll(currentUser: user) {
   const memberAddresses = await getAllMemberAddresses(
     currentUser!.partnersAgreementKey.communityAddress
   );
   const memberData = await getMembersData(memberAddresses);
-  const comp = ["??", "??", "??", "??"]; //await getComp(memberAddresses) TODO IMPLEMENT
-  return memberData.map((member, index) => {
-    return { ...member, compensation: comp[index] };
-  });
+  return Promise.all(
+    memberData.map(async (member, index) => {
+      const comp = await getFlowRate(
+        member.id,
+        "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f"
+      );
+      return { ...member, compensation: comp };
+    })
+  );
 }
 interface payroll {
   id: string;
@@ -57,7 +63,7 @@ const PayrollTable = () => {
       console.log("Current", currentUser);
       const loadData = getPayroll(currentUser);
       toast.promise(loadData, {
-        pending: "Fetching payroll data",
+        pending: "Fetching salary data",
         success: "Loaded successfully",
         error: "Error",
       });
@@ -74,7 +80,7 @@ const PayrollTable = () => {
         <tr className="content_table-fields">
           <td className="content_table-fields-field">Position</td>
           <td className="content_table-fields-field">Name</td>
-          <td className="content_table-fields-field">Compensation</td>
+          <td className="content_table-fields-field">Salary</td>
           <td className="content_table-fields-field">Action</td>
         </tr>
         {payrollData.map((payroll) => (
