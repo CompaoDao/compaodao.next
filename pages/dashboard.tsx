@@ -25,12 +25,7 @@ const Dashboard: NextPage = () => {
         return <TransactionsTable />;
     }
   };
-  const communityAddress =
-    typeof window !== "undefined" &&
-    window.sessionStorage.getItem("skillWallet") &&
-    JSON.parse(window.sessionStorage.getItem("skillWallet") as string)
-      .partnersAgreementKey.communityAddress;
-  console.log("mmh", communityAddress);
+
   return (
     <div>
       <Head>

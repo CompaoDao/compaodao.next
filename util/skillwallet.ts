@@ -58,3 +58,9 @@ export async function getMembersData(memberAddresses: string[]) {
   console.log(payroll);
   return payroll;
 }
+
+// export const CurrentUserContext = createContext(
+//   undefined as
+//     | undefined
+//     | { partnersAgreementKey: { communityAddress: string } }
+// );

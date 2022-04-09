@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../contexts/AuthContext";
 import {
-  CurrentUserContext,
   getAllMemberAddresses,
   getMembersData,
   getTokenIdByAddress,
@@ -26,9 +26,10 @@ interface payroll {
   compensation: string;
 }
 const PayrollTable = () => {
-  const currentUser = useContext(CurrentUserContext);
+  const { currentUser } = useContext(AuthContext);
   const [payrollData, setPayrollData] = useState([] as payroll[]);
   const [initializing, setInitiliazing] = useState(true);
+
   useEffect(() => {
     if (currentUser) {
       const loadData = getPayroll(currentUser);
@@ -43,6 +44,7 @@ const PayrollTable = () => {
       });
     }
   }, [currentUser]);
+
   if (!initializing) {
     return (
       <table className="content_table">
