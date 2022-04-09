@@ -14,8 +14,8 @@ export async function getAllMemberAddresses(communityAddress: string) {
   console.log(allMembers);
   return allMembers;
 }
-export const CurrentUserContext = createContext(
-  undefined as
-    | undefined
-    | { partnersAgreementKey: { communityAddress: string } }
-);
+// export const CurrentUserContext = createContext(
+//   undefined as
+//     | undefined
+//     | { partnersAgreementKey: { communityAddress: string } }
+// );

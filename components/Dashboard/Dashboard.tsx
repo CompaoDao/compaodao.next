@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { CurrentUserContext } from "../../util/skillwallet";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Dashboard = () => {
-  const currentUser = useContext(CurrentUserContext);
+  const { currentUser } = useContext(AuthContext);
   if (currentUser) {
     return <div>DASHBOARD</div>;
   } else {

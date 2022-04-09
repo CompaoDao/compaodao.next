@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 import {
-  CurrentUserContext,
   getAllMemberAddresses,
   getAllMembers,
 } from "../../util/skillwallet";
@@ -38,9 +38,10 @@ interface payroll {
   compensation: string;
 }
 const PayrollTable = () => {
-  const currentUser = useContext(CurrentUserContext);
+  const { currentUser } = useContext(AuthContext);
   const [payrollData, setPayrollData] = useState([] as payroll[]);
   const [initializing, setInitiliazing] = useState(true);
+
   useEffect(() => {
     async function loadMembers() {
       const memberAddresses = await getAllMemberAddresses(
@@ -52,6 +53,7 @@ const PayrollTable = () => {
     }
     if (currentUser) loadMembers();
   }, [currentUser]);
+
   if (!initializing) {
     return (
       <table className="content_table">
