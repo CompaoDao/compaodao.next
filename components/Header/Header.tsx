@@ -33,7 +33,6 @@ const Header = () => {
       } else {
         router.push({ pathname: "/" });
       }
-      // router.push({pathname:'/dashboard'});
       return null;
     }
 

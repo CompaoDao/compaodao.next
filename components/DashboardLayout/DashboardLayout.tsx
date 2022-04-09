@@ -1,15 +1,15 @@
 import { InitSwAuth } from "@skill-wallet/auth";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DashboardIcon from "../../assets/icons/DashboardIcon";
 import PayrollIcon from "../../assets/icons/PayrollIcon";
 import TransactionsIcon from "../../assets/icons/TransactionsIcon";
+import { AuthContext } from "../../contexts/AuthContext";
 import { Menu } from "../../pages/dashboard";
-import { CurrentUserContext } from "../../util/skillwallet";
-import { truncateWallet } from "../../util/truncateWallet";
 import Button from "../Button/Button";
 import Modal from "../Modal/Modal";
 
 const DashboardLayout = ({ menu, setMenu, children }) => {
+  const { currentUser } = useContext(AuthContext);
   // const [modalIsOpen, setIsOpen] = useState(false);
 
   return (
@@ -29,7 +29,7 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
               <div className="left_panel-center-menu-icon">
                 <DashboardIcon color="white" />
               </div>
-              <div className="left_panel-center-menu-text">Dashboard</div>
+              <div className="left_panel-center-menu-text">Income</div>
             </div>
             <div
               className="left_panel-center-menu"
@@ -66,18 +66,20 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
           <div className="right_panel-header">
             <div className="right_panel-header-title">
               {menu === Menu.DASHBOARD
-                ? "Dashboard"
+                ? currentUser?.isCoreTeamMember
+                  ? "Burn Rate"
+                  : "Income"
                 : menu === Menu.SALARIES
                   ? "Salaries"
                   : "Payslips"
                 }
             </div>
             <div className="right_panel-header-button">
-              {menu === Menu.SALARIES && (
+              {/* {menu === Menu.SALARIES && (
                 <Button onClick={() => setIsOpen(true)}>
                   + Add new employee
                 </Button>
-              )}
+              )} */}
             </div>
           </div>
           <div className="right_panel-content-container">

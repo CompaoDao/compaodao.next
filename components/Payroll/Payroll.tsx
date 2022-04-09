@@ -36,7 +36,6 @@ interface payroll {
 }
 const PayrollEach = (payroll: any) => {
   const [modalIsOpen, setIsOpen] = useState(false);
-
   return (
     <>
       <Modal modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} data={payroll}/>
@@ -50,7 +49,7 @@ const PayrollEach = (payroll: any) => {
           className="content_table-row-remove"
           onClick={() => setIsOpen(true)}
         >
-          Remove
+          Update
         </td>
       </tr>
     </>

@@ -4,7 +4,7 @@ const client = createClient({
   url: 'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-mumbai',
 })
 
-type PeriodFlow = {
+export type PeriodFlow = {
   start: Date,
   sum: bigint,
   currency: string,
