@@ -1,32 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import LogoIcon from '../../assets/icons/LogoIcon';
 import Button from '../Button/Button';
-import { InitSwAuth } from "@skill-wallet/auth";
-//Skill wallet community id: f407f2a2b646a7940f159ce27c2c9427c97dc853
 
 const Landing = () => {
-  useEffect(() => {
-    InitSwAuth();
-  }, []);
-
   return (
     <div className="landing-container">
-      <div className="landing-header">
-        <div className="landing-header-logo">
-          <LogoIcon />
-        </div>
-        <div className="landing-header-wallet">
-          {/* <Button>Connect Wallet</Button> */}
-          {/*@ts-ignore*/}
-          <sw-auth
-            partner-key="f407f2a2b646a7940f159ce27c2c9427c97dc853"
-            use-dev="true"
-          >
-            {/*@ts-ignore*/}
-          </sw-auth>
-          
-        </div>
-      </div>
       <div className="landing-jumbotron">
         <div className="landing-jumbotron-container">
           <div className="landing-jumbotron-main">
@@ -37,7 +15,7 @@ const Landing = () => {
           </div>
           <div className="landing-jumbotron-buttons">
             <div className="landing-jumbotron-buttons-wallet">
-              <Button>Connect Wallet</Button>
+              {/* <Button>Connect Wallet</Button> */}
             </div>
           </div>
         </div>
