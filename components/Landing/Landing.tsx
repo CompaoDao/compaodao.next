@@ -15,7 +15,7 @@ const Landing = () => {
           </div>
           <div className="landing-jumbotron-buttons">
             <div className="landing-jumbotron-buttons-wallet">
-              <Button>Connect Wallet</Button>
+              {/* <Button>Connect Wallet</Button> */}
             </div>
           </div>
         </div>
