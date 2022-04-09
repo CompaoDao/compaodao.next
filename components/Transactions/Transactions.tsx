@@ -1,61 +1,90 @@
-import React from "react";
+import next from "next";
+import React, { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../contexts/AuthContext";
+import { postPayrollToIPFS } from "../../util/IPFS";
+import {
+  getAllMemberAddresses,
+  getMembersData,
+  user,
+} from "../../util/skillwallet";
 
-const sampleTransactionsData = [
-  {
-    id: 1,
-    name: "Drew Smith",
-    dateStart: "1/4/2022",
-    dateEnd: "8/4/2022",
-    payment: "$14,000",
-    invoiceUrl:
-      "https://ipfs.io/ipfs/QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1 ",
-  },
-  {
-    id: 2,
-    name: "Drew Smith",
-    dateStart: "1/4/2022",
-    dateEnd: "8/4/2022",
-    payment: "$14,000",
-    invoiceUrl:
-      "https://ipfs.io/ipfs/QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1 ",
-  },
-  {
-    id: 3,
-    name: "Drew Smith",
-    dateStart: "1/4/2022",
-    dateEnd: "8/4/2022",
-    payment: "$14,000",
-    invoiceUrl:
-      "https://ipfs.io/ipfs/QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1 ",
-  },
-];
-
-const TransactionsTable = () => {
-  return (
-    <table className="content_table">
-      <tr className="content_table-fields">
-        <td className="content_table-fields-field">Name</td>
-        <td className="content_table-fields-field">Duration</td>
-        <td className="content_table-fields-field">Payment</td>
-        <td className="content_table-fields-field">Invoice</td>
-      </tr>
-      {sampleTransactionsData.map((transaction) => (
-        <tr key={transaction.id} className="content_table-row">
-          <td className="content_table-row-standard">{transaction.name}</td>
-          <td className="content_table-row-standard">{`${transaction.dateStart}-${transaction.dateEnd}`}</td>
-          <td className="content_table-row-standard">{transaction.payment}</td>
-          <td
-            className="content_table-row-download"
-            onClick={() =>
-              console.log(`Click download id: ${transaction.invoiceUrl}`)
-            }
-          >
-            Download
-          </td>
-        </tr>
-      ))}
-    </table>
+async function getTransactions(currentUser: user) {
+  const memberAddresses = await getAllMemberAddresses(
+    currentUser!.partnersAgreementKey.communityAddress
   );
+  const memberData = await getMembersData(memberAddresses);
+  const payment = ["??", "??", "??", "??"]; //await getComp(memberAddresses) TODO IMPLEMENT
+  return memberData.map((member, index) => {
+    return {
+      ...member,
+      payment: payment[index],
+      month: ((new Date().getMonth() - 1) % 12) + 1,
+    };
+  });
+}
+interface transaction {
+  id: string;
+  name: string;
+  month: number;
+  payment: string;
+}
+const TransactionsTable = () => {
+  const { currentUser } = useContext(AuthContext);
+  const [transactionData, setTransactionData] = useState([] as transaction[]);
+  const [initializing, setInitiliazing] = useState(true);
+  useEffect(() => {
+    if (currentUser && initializing) {
+      console.log("Current", currentUser);
+      const loadData = getTransactions(currentUser);
+      toast.promise(loadData, {
+        pending: "Fetching payroll data",
+        success: "Loaded successfully",
+        error: "Error",
+      });
+      loadData.then((transaction) => {
+        setTransactionData(transaction);
+        setInitiliazing(false);
+      });
+    }
+  }, [currentUser, initializing]);
+
+  if (!initializing) {
+    return (
+      <table className="content_table">
+        <tr className="content_table-fields">
+          <td className="content_table-fields-field">Name</td>
+          <td className="content_table-fields-field">Month</td>
+          <td className="content_table-fields-field">Payment</td>
+          <td className="content_table-fields-field">Invoice</td>
+        </tr>
+        {transactionData.map((transaction) => (
+          <tr key={transaction.id} className="content_table-row">
+            <td className="content_table-row-standard">{transaction.name}</td>
+            <td className="content_table-row-standard">{transaction.month}</td>
+            <td className="content_table-row-standard">
+              {transaction.payment}
+            </td>
+            <td
+              className="content_table-row-download"
+              onClick={() =>
+                postPayrollToIPFS(
+                  transaction.id,
+                  transaction.payment,
+                  transaction.month,
+                  transaction.name
+                ).then((hash) => {
+                  console.log("Open", `https://ipfs.io/ipfs/${hash}`);
+                })
+              }
+            >
+              Create Payslip
+            </td>
+          </tr>
+        ))}
+      </table>
+    );
+  } else return null;
 };
 
 export default TransactionsTable;

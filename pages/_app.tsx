@@ -1,10 +1,12 @@
 import "../styles/index.scss";
 import { AppProps } from "next/app";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import Header from "../components/Header/Header";
+import "react-toastify/dist/ReactToastify.css";
 import { AuthContextProvider } from "../contexts/AuthContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  console.log("test");
   return (
     <AuthContextProvider>
       <ToastContainer />
