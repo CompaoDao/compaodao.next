@@ -1,6 +1,4 @@
 import React from 'react';
-import LogoIcon from '../../assets/icons/LogoIcon';
-import Button from '../Button/Button';
 
 const Landing = () => {
   return (
