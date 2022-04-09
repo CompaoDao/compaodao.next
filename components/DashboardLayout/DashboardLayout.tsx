@@ -69,8 +69,8 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
               {menu === Menu.DASHBOARD
                 ? "Dashboard"
                 : menu === Menu.PAYROLL
-                ? "Payroll"
-                : "Transactions"}
+                ? "Salaries"
+                : "Payslips"}
             </div>
             <div className="right_panel-header-button">
               {menu === Menu.PAYROLL && (

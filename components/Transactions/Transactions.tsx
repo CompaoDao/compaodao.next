@@ -38,7 +38,7 @@ const TransactionsTable = () => {
       console.log("Current", currentUser);
       const loadData = getTransactions(currentUser);
       toast.promise(loadData, {
-        pending: "Fetching payroll data",
+        pending: "Fetching payslip data",
         success: "Loaded successfully",
         error: "Error",
       });
