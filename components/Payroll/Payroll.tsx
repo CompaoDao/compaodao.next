@@ -6,7 +6,6 @@ import {
   getMembersData,
   getTokenIdByAddress,
   getUserByTokenId,
-  getUserData,
   user,
 } from "../../util/skillwallet";
 async function getPayroll(currentUser: user) {
@@ -29,8 +28,11 @@ const PayrollTable = () => {
   const currentUser = useContext(CurrentUserContext);
   const [payrollData, setPayrollData] = useState([] as payroll[]);
   const [initializing, setInitiliazing] = useState(true);
+  const [loadingData, setLoadingData] = useState(false);
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && initializing && !loadingData) {
+      setLoadingData(true);
+      console.log("Current", currentUser);
       const loadData = getPayroll(currentUser);
       toast.promise(loadData, {
         pending: "Fetching payroll data",
@@ -42,7 +44,7 @@ const PayrollTable = () => {
         setInitiliazing(false);
       });
     }
-  }, [currentUser]);
+  }, [currentUser, initializing, loadingData]);
   if (!initializing) {
     return (
       <table className="content_table">
