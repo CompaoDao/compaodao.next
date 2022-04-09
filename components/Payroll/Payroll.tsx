@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../contexts/AuthContext";
 import {
-  CurrentUserContext,
   getAllMemberAddresses,
   getMembersData,
   getTokenIdByAddress,
@@ -25,13 +25,11 @@ interface payroll {
   compensation: string;
 }
 const PayrollTable = () => {
-  const currentUser = useContext(CurrentUserContext);
+  const { currentUser } = useContext(AuthContext);
   const [payrollData, setPayrollData] = useState([] as payroll[]);
   const [initializing, setInitiliazing] = useState(true);
-  const [loadingData, setLoadingData] = useState(false);
   useEffect(() => {
-    if (currentUser && initializing && !loadingData) {
-      setLoadingData(true);
+    if (currentUser && initializing) {
       console.log("Current", currentUser);
       const loadData = getPayroll(currentUser);
       toast.promise(loadData, {
@@ -44,7 +42,12 @@ const PayrollTable = () => {
         setInitiliazing(false);
       });
     }
+<<<<<<< HEAD
   }, [currentUser, initializing, loadingData]);
+=======
+  }, [currentUser]);
+
+>>>>>>> c280743669f4838eac6334966b509b919add3a47
   if (!initializing) {
     return (
       <table className="content_table">
