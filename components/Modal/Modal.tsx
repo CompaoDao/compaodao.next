@@ -4,7 +4,13 @@ import { toast } from "react-toastify";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import { createFlow, updateFlow } from "../../util/superfluid";
 
-const Modal = ({ modalIsOpen, setIsOpen, setTempCompensation, recipient }) => {
+const Modal = ({
+  modalIsOpen,
+  setIsOpen,
+  setTempCompensation,
+  recipient,
+  currentCompensation,
+}) => {
   // const [userId, setUserId] = useState('');
   // const [walletAddress, setWalletAddress] = useState('');
   // const [userName, setUserName] = useState('');
@@ -24,11 +30,18 @@ const Modal = ({ modalIsOpen, setIsOpen, setTempCompensation, recipient }) => {
     setTempCompensation(compensation);
     console.log("comp", compensation);
     console.log("comp", recipient);
-    const updating = createFlow(
-      recipient,
-      "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
-      compensation
-    );
+    const updating =
+      currentCompensation != "0"
+        ? updateFlow(
+            recipient,
+            "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
+            compensation
+          )
+        : createFlow(
+            recipient,
+            "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
+            compensation
+          );
     toast.promise(updating, {
       pending: "Updating compensation",
       success: "Success!",

@@ -19,16 +19,18 @@ async function getTransactions(currentUser: user) {
     memberData.map(async (member, index) => {
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
+      console.log("fedfe", member.position != "Core Team");
       const payment = await getSumForPeriod(
         member.id,
         yesterday,
         new Date(),
-        member.position == "Core Team"
+        member.position != "Core Team"
       );
+      console.log("payment", payment.toString());
       return {
         ...member,
-        payment: payment,
-        month: ((new Date().getMonth() - 1) % 12) + 1,
+        payment: payment.toString(),
+        date: yesterday.toLocaleDateString(),
       };
     })
   );
@@ -36,7 +38,7 @@ async function getTransactions(currentUser: user) {
 interface transaction {
   id: string;
   name: string;
-  month: number;
+  date: number;
   payment: string;
 }
 const TransactionsTable = () => {
@@ -64,14 +66,16 @@ const TransactionsTable = () => {
       <table className="content_table">
         <tr className="content_table-fields">
           <td className="content_table-fields-field">Name</td>
-          <td className="content_table-fields-field">Month</td>
-          <td className="content_table-fields-field">Payment</td>
+          <td className="content_table-fields-field">Date</td>
+          <td className="content_table-fields-field">
+            Paid (over the whole day)
+          </td>
           <td className="content_table-fields-field">Invoice</td>
         </tr>
         {transactionData.map((transaction) => (
           <tr key={transaction.id} className="content_table-row">
             <td className="content_table-row-standard">{transaction.name}</td>
-            <td className="content_table-row-standard">{transaction.month}</td>
+            <td className="content_table-row-standard">{transaction.date}</td>
             <td className="content_table-row-standard">
               {transaction.payment}
             </td>
@@ -81,7 +85,7 @@ const TransactionsTable = () => {
                 postPayrollToIPFS(
                   transaction.id,
                   transaction.payment,
-                  transaction.month,
+                  transaction.date,
                   transaction.name
                 ).then((hash) => {
                   console.log("Open", `https://ipfs.io/ipfs/${hash}`);

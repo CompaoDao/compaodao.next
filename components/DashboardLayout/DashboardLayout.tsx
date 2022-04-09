@@ -42,7 +42,7 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
               <div className="left_panel-center-menu-icon">
                 <PayrollIcon color="white" />
               </div>
-              <div className="left_panel-center-menu-text">Payroll</div>
+              <div className="left_panel-center-menu-text">Salaries</div>
             </div>
             <div
               className="left_panel-center-menu"
@@ -56,7 +56,7 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
               <div className="left_panel-center-menu-icon">
                 <TransactionsIcon color="white" />
               </div>
-              <div className="left_panel-center-menu-text">Transactions</div>
+              <div className="left_panel-center-menu-text">Payslips</div>
             </div>
           </div>
           <div className="left_panel-bottom"></div>

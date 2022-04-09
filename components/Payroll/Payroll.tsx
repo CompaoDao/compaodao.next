@@ -32,6 +32,8 @@ interface payroll {
   compensation: string;
 }
 const PayrollEach = (payroll: { payroll: payroll }) => {
+  const { currentUser } = useContext(AuthContext);
+  console.log("cunfr", currentUser);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [tempCompensation, setTempCompensation] = useState("");
   return (
@@ -41,6 +43,11 @@ const PayrollEach = (payroll: { payroll: payroll }) => {
         setIsOpen={setIsOpen}
         recipient={payroll.payroll.id}
         setTempCompensation={setTempCompensation}
+        currentCompensation={
+          tempCompensation != ""
+            ? tempCompensation
+            : payroll.payroll.compensation
+        }
       />
       <tr key={payroll.payroll.id} className="content_table-row">
         <td className="content_table-row-standard">
@@ -52,12 +59,14 @@ const PayrollEach = (payroll: { payroll: payroll }) => {
             ? tempCompensation
             : payroll.payroll.compensation}
         </td>
-        <td
-          className="content_table-row-remove"
-          onClick={() => setIsOpen(true)}
-        >
-          Change salary
-        </td>
+        {(currentUser! as any).isCoreTeamMember && (
+          <td
+            className="content_table-row-remove"
+            onClick={() => setIsOpen(true)}
+          >
+            Change salary
+          </td>
+        )}
       </tr>
     </>
   );
@@ -89,8 +98,10 @@ const PayrollTable = () => {
         <tr className="content_table-fields">
           <td className="content_table-fields-field">Position</td>
           <td className="content_table-fields-field">Name</td>
-          <td className="content_table-fields-field">Salary</td>
-          <td className="content_table-fields-field">Action</td>
+          <td className="content_table-fields-field">Salary (wei/s)</td>
+          {(currentUser! as any).isCoreTeamMember && (
+            <td className="content_table-fields-field">Action</td>
+          )}
         </tr>
         {payrollData.map((payroll) => (
           <PayrollEach key={payroll.id} payroll={payroll} />
