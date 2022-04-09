@@ -8,6 +8,7 @@ import {
   getUserByTokenId,
   user,
 } from "../../util/skillwallet";
+import Modal from "../Modal/Modal";
 async function getPayroll(currentUser: user) {
   const memberAddresses = await getAllMemberAddresses(
     currentUser!.partnersAgreementKey.communityAddress
@@ -24,6 +25,29 @@ interface payroll {
   name: string;
   compensation: string;
 }
+const PayrollEach = (payroll: any) => {
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Modal modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} data={payroll}/>
+      <tr key={payroll.payroll.id} className="content_table-row">
+        <td className="content_table-row-standard">{payroll.payroll.position}</td>
+        <td className="content_table-row-standard">{payroll.payroll.name}</td>
+        <td className="content_table-row-standard">
+          {payroll.payroll.compensation}
+        </td>
+        <td
+          className="content_table-row-remove"
+          onClick={() => setIsOpen(true)}
+        >
+          Remove
+        </td>
+      </tr>
+    </>
+  )
+}
+
 const PayrollTable = () => {
   const { currentUser } = useContext(AuthContext);
   const [payrollData, setPayrollData] = useState([] as payroll[]);
@@ -54,19 +78,7 @@ const PayrollTable = () => {
           <td className="content_table-fields-field">Action</td>
         </tr>
         {payrollData.map((payroll) => (
-          <tr key={payroll.id} className="content_table-row">
-            <td className="content_table-row-standard">{payroll.position}</td>
-            <td className="content_table-row-standard">{payroll.name}</td>
-            <td className="content_table-row-standard">
-              {payroll.compensation}
-            </td>
-            <td
-              className="content_table-row-remove"
-              onClick={() => console.log(`Click remove id: ${payroll.id}`)}
-            >
-              Remove
-            </td>
-          </tr>
+          <PayrollEach key={payroll.id} payroll={payroll} />
         ))}
       </table>
     );
