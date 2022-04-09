@@ -10,11 +10,10 @@ import Button from "../Button/Button";
 import Modal from "../Modal/Modal";
 
 const DashboardLayout = ({ menu, setMenu, children }) => {
-  const [modalIsOpen, setIsOpen] = useState(false);
+  // const [modalIsOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <Modal modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
       <div className="container">
         <div className="left_panel">
           <div className="left_panel-top"></div>
