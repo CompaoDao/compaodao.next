@@ -90,18 +90,13 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
             </div>
           </div>
           <div className="left_panel-bottom">
-            <div className="left_panel-bottom-icon">
-              <ProfileIcon />
-            </div>
-            <div className="left_panel-bottom-wallet">
-              {truncateWallet("0x24A2d17147F177F5a5d3e50C7717eC58Ccf4458D", 4)}
-            </div>
-            <div
-              className="left_panel-bottom-logout"
-              onClick={() => console.log("Handle Logout")}
+            {/*@ts-ignore*/}
+            <sw-auth
+              partner-key="75122500c30d00dd83c1a2c306d3e6e298ba70b7" //"212ffeaad53d44d5d685c17a48935a71e32b862f" //f407f2a2b646a7940f159ce27c2c9427c97dc853"
+              use-dev="true"
             >
-              <LogoutIcon />
-            </div>
+              {/*@ts-ignore*/}
+            </sw-auth>
           </div>
         </div>
 
