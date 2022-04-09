@@ -8,6 +8,7 @@ import {
   getMembersData,
   user,
 } from "../../util/skillwallet";
+import { getSumForPeriod } from "../../util/streams";
 import Loading from "../Loading/Loading";
 
 async function getTransactions(currentUser: user) {
@@ -15,19 +16,31 @@ async function getTransactions(currentUser: user) {
     currentUser!.partnersAgreementKey.communityAddress
   );
   const memberData = await getMembersData(memberAddresses);
-  const payment = ["??", "??", "??", "??"]; //await getComp(memberAddresses) TODO IMPLEMENT
-  return memberData.map((member, index) => {
-    return {
-      ...member,
-      payment: payment[index],
-      month: ((new Date().getMonth() - 1) % 12) + 1,
-    };
-  });
+  return Promise.all(
+    memberData.map(async (member, index) => {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      console.log("fedfe", member.position != "Core Team");
+      const payment = await getSumForPeriod(
+        member.id,
+        yesterday,
+        new Date(),
+        member.position == "Core Team"
+      );
+      console.log("payment", payment.toString());
+      return {
+        ...member,
+        payment: payment.toString(),
+        date: yesterday.toLocaleDateString(),
+      };
+    })
+  );
 }
 interface transaction {
   id: string;
   name: string;
-  month: number;
+  date: number;
+  position: string;
   payment: string;
 }
 const TransactionsTable = () => {
@@ -43,58 +56,62 @@ const TransactionsTable = () => {
           setTransactionData(transaction);
           setIsLoading(false);
         })
-        .catch(err => {
+        .catch((err) => {
           toast.error(`${err.message}`);
           setIsLoading(false);
-        })
+        });
     }
   }, [currentUser]);
 
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
     <>
-      {transactionData?.length
-        ? (
-          <table className="content_table">
-            <tr className="content_table-fields">
-              <td className="content_table-fields-field">Name</td>
-              <td className="content_table-fields-field">Month</td>
-              <td className="content_table-fields-field">Payment</td>
-              <td className="content_table-fields-field">Invoice</td>
-            </tr>
-            {transactionData.map((transaction) => (
-              <tr key={transaction.id} className="content_table-row">
-                <td className="content_table-row-standard">{transaction.name}</td>
-                <td className="content_table-row-standard">{transaction.month}</td>
-                <td className="content_table-row-standard">
-                  {transaction.payment}
-                </td>
-                <td
-                  className="content_table-row-download"
-                  onClick={() =>
-                    postPayrollToIPFS(
-                      transaction.id,
-                      transaction.payment,
-                      transaction.month,
-                      transaction.name
-                    ).then((hash) => {
-                      console.log("Open", `https://ipfs.io/ipfs/${hash}`);
-                    })
-                  }
-                >
-                  Create Payslip
-                </td>
-              </tr>
-            ))}
-          </table>
-        )
-        : (
-          <div>No data available</div>
-        )
-      }
+      {transactionData?.length ? (
+        <table className="content_table">
+          <tr className="content_table-fields">
+            <td className="content_table-fields-field">Name</td>
+            <td className="content_table-fields-field">Date</td>
+            <td className="content_table-fields-field">Paid (wei/day)</td>
+            <td className="content_table-fields-field">Invoice</td>
+          </tr>
+          {transactionData.map(
+            (transaction) =>
+              transaction.position != "Core Team" && (
+                <tr key={transaction.id} className="content_table-row">
+                  <td className="content_table-row-standard">
+                    {transaction.name}
+                  </td>
+                  <td className="content_table-row-standard">
+                    {transaction.date}
+                  </td>
+                  <td className="content_table-row-standard">
+                    {transaction.payment}
+                  </td>
+                  <td
+                    className="content_table-row-download"
+                    onClick={() =>
+                      postPayrollToIPFS(
+                        transaction.id,
+                        transaction.payment,
+                        transaction.date,
+                        transaction.name
+                      ).then((hash) => {
+                        window.open(`https://ipfs.io/ipfs/${hash}`);
+                      })
+                    }
+                  >
+                    Create Payslip
+                  </td>
+                </tr>
+              )
+          )}
+        </table>
+      ) : (
+        <div>No data available</div>
+      )}
     </>
   );
 };

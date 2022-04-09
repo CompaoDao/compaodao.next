@@ -5,13 +5,9 @@ import PayrollIcon from "../../assets/icons/PayrollIcon";
 import TransactionsIcon from "../../assets/icons/TransactionsIcon";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Menu } from "../../pages/dashboard";
-import Button from "../Button/Button";
-import Modal from "../Modal/Modal";
 
 const DashboardLayout = ({ menu, setMenu, children }) => {
   const { currentUser } = useContext(AuthContext);
-  // const [modalIsOpen, setIsOpen] = useState(false);
-
   return (
     <>
       <div className="container">
@@ -29,7 +25,11 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
               <div className="left_panel-center-menu-icon">
                 <DashboardIcon color="white" />
               </div>
-              <div className="left_panel-center-menu-text">Income</div>
+              <div className="left_panel-center-menu-text">
+                {currentUser && (currentUser! as any).isCoreTeamMember
+                  ? "Burn Rate"
+                  : "Income"}
+              </div>
             </div>
             <div
               className="left_panel-center-menu"
@@ -47,8 +47,7 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
             <div
               className="left_panel-center-menu"
               style={{
-                backgroundColor:
-                  menu === Menu.PAYSLIPS ? "#41A8F2" : "white",
+                backgroundColor: menu === Menu.PAYSLIPS ? "#41A8F2" : "white",
                 color: menu === Menu.PAYSLIPS ? "white" : "black",
               }}
               onClick={() => setMenu(Menu.PAYSLIPS)}
@@ -66,7 +65,7 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
           <div className="right_panel-header">
             <div className="right_panel-header-title">
               {menu === Menu.DASHBOARD
-                ? currentUser?.isCoreTeamMember
+                ? (currentUser! as any)?.isCoreTeamMember
                   ? "Burn Rate"
                   : "Income"
                 : menu === Menu.SALARIES
