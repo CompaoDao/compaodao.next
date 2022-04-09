@@ -8,8 +8,8 @@ import TransactionsTable from "../components/Transactions/Transactions";
 
 export enum Menu {
   DASHBOARD,
-  PAYROLL,
-  TRANSACTIONS,
+  SALARIES,
+  PAYSLIPS,
 }
 
 const Dashboard: NextPage = () => {
@@ -18,9 +18,9 @@ const Dashboard: NextPage = () => {
     switch (menu) {
       case Menu.DASHBOARD:
         return <DashboardGraphs />;
-      case Menu.PAYROLL:
+      case Menu.SALARIES:
         return <PayrollTable />;
-      case Menu.TRANSACTIONS:
+      case Menu.PAYSLIPS:
       default:
         return <TransactionsTable />;
     }
@@ -30,7 +30,7 @@ const Dashboard: NextPage = () => {
     <div>
       <Head>
         <title>Dashboard</title>
-        <meta name="description" content="Dashb oard" />
+        <meta name="description" content="Dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>

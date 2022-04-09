@@ -10,11 +10,14 @@ import {
 } from "../../util/skillwallet";
 import Modal from "../Modal/Modal";
 import { getFlowRate } from "../../util/superfluid";
+import Loading from "../Loading/Loading";
+
 async function getPayroll(currentUser: user) {
   const memberAddresses = await getAllMemberAddresses(
     currentUser!.partnersAgreementKey.communityAddress
   );
   const memberData = await getMembersData(memberAddresses);
+  console.log(memberData);
   return Promise.all(
     memberData.map(async (member, index) => {
       const comp = await getFlowRate(
@@ -74,43 +77,51 @@ const PayrollEach = (payroll: { payroll: payroll }) => {
 
 const PayrollTable = () => {
   const { currentUser } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(true);
   const [payrollData, setPayrollData] = useState([] as payroll[]);
-  const [initializing, setInitiliazing] = useState(true);
-  useEffect(() => {
-    if (currentUser && initializing) {
-      console.log("Current", currentUser);
-      const loadData = getPayroll(currentUser);
-      toast.promise(loadData, {
-        pending: "Fetching salary data",
-        success: "Loaded successfully",
-        error: "Error",
-      });
-      loadData.then((payroll) => {
-        setPayrollData(payroll);
-        setInitiliazing(false);
-      });
-    }
-  }, [currentUser, initializing]);
 
-  if (!initializing) {
-    return (
-      <table className="content_table">
-        <tr className="content_table-fields">
-          <td className="content_table-fields-field">Position</td>
-          <td className="content_table-fields-field">Name</td>
-          <td className="content_table-fields-field">Salary (wei/s)</td>
+  useEffect(() => {
+    if (currentUser) {
+      setIsLoading(true);
+      getPayroll(currentUser)
+        .then((payroll) => {
+          setPayrollData(payroll);
+          setIsLoading(false);
+        })
+        .catch(err => {
+          toast.error(`${err.message}`);
+          setIsLoading(false);
+        })
+    }
+  }, [currentUser]);
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+  return (
+    <>
+      {payrollData?.length
+        ? (
+        <table className="content_table">
+          <tr className="content_table-fields">
+            <td className="content_table-fields-field">Position</td>
+            <td className="content_table-fields-field">Name</td>
+            <td className="content_table-fields-field">Salary</td>
           {(currentUser! as any).isCoreTeamMember && (
             <td className="content_table-fields-field">Action</td>
           )}
-        </tr>
-        {payrollData.map((payroll) => (
-          <PayrollEach key={payroll.id} payroll={payroll} />
-        ))}
-      </table>
-    );
-  } else {
-    return null;
-  }
+          </tr>
+          {payrollData.map((payroll) => (
+            <PayrollEach key={payroll.id} payroll={payroll} />
+          ))}
+        </table>
+        )
+      : (
+        <div>No data available</div>
+      )}
+    </>
+  );
 };
 
 export default PayrollTable;

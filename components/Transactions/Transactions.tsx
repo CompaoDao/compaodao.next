@@ -9,6 +9,7 @@ import {
   user,
 } from "../../util/skillwallet";
 import { getSumForPeriod } from "../../util/streams";
+import Loading from "../Loading/Loading";
 
 async function getTransactions(currentUser: user) {
   const memberAddresses = await getAllMemberAddresses(
@@ -44,61 +45,71 @@ interface transaction {
 const TransactionsTable = () => {
   const { currentUser } = useContext(AuthContext);
   const [transactionData, setTransactionData] = useState([] as transaction[]);
-  const [initializing, setInitiliazing] = useState(true);
-  useEffect(() => {
-    if (currentUser && initializing) {
-      console.log("Current", currentUser);
-      const loadData = getTransactions(currentUser);
-      toast.promise(loadData, {
-        pending: "Fetching payslip data",
-        success: "Loaded successfully",
-        error: "Error",
-      });
-      loadData.then((transaction) => {
-        setTransactionData(transaction);
-        setInitiliazing(false);
-      });
-    }
-  }, [currentUser, initializing]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  if (!initializing) {
-    return (
-      <table className="content_table">
-        <tr className="content_table-fields">
-          <td className="content_table-fields-field">Name</td>
-          <td className="content_table-fields-field">Date</td>
-          <td className="content_table-fields-field">
-            Paid (over the whole day)
-          </td>
-          <td className="content_table-fields-field">Invoice</td>
-        </tr>
-        {transactionData.map((transaction) => (
-          <tr key={transaction.id} className="content_table-row">
-            <td className="content_table-row-standard">{transaction.name}</td>
-            <td className="content_table-row-standard">{transaction.date}</td>
-            <td className="content_table-row-standard">
-              {transaction.payment}
-            </td>
-            <td
-              className="content_table-row-download"
-              onClick={() =>
-                postPayrollToIPFS(
-                  transaction.id,
-                  transaction.payment,
-                  transaction.date,
-                  transaction.name
-                ).then((hash) => {
-                  console.log("Open", `https://ipfs.io/ipfs/${hash}`);
-                })
-              }
-            >
-              Create Payslip
-            </td>
-          </tr>
-        ))}
-      </table>
-    );
-  } else return null;
+  useEffect(() => {
+    if (currentUser) {
+      setIsLoading(true);
+      getTransactions(currentUser)
+        .then((transaction) => {
+          setTransactionData(transaction);
+          setIsLoading(false);
+        })
+        .catch(err => {
+          toast.error(`${err.message}`);
+          setIsLoading(false);
+        })
+    }
+  }, [currentUser]);
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+
+  return (
+    <>
+      {transactionData?.length
+        ? (
+          <table className="content_table">
+            <tr className="content_table-fields">
+              <td className="content_table-fields-field">Name</td>
+              <td className="content_table-fields-field">Date</td>
+              <td className="content_table-fields-field">Paid (over the whole day)</td>
+              <td className="content_table-fields-field">Invoice</td>
+            </tr>
+            {transactionData.map((transaction) => (
+              <tr key={transaction.id} className="content_table-row">
+                <td className="content_table-row-standard">{transaction.name}</td>
+                <td className="content_table-row-standard">{transaction.date}</td>
+                <td className="content_table-row-standard">
+                  {transaction.payment}
+                </td>
+                <td
+                  className="content_table-row-download"
+                  onClick={() =>
+                    postPayrollToIPFS(
+                      transaction.id,
+                      transaction.payment,
+                      transaction.date,
+                      transaction.name
+                    ).then((hash) => {
+                      console.log("Open", `https://ipfs.io/ipfs/${hash}`);
+                    })
+                  }
+                >
+                  Create Payslip
+                </td>
+              </tr>
+            ))}
+          </table>
+        )
+        : (
+          <div>No data available</div>
+        )
+      }
+    </>
+  );
 };
 
 export default TransactionsTable;
