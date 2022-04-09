@@ -1,4 +1,5 @@
 import * as ethers from "ethers";
+import { createContext } from "react";
 import community from "../abis/Community.json";
 export async function getAllMembers(communityAddress: string) {
   // Connect to the network
@@ -13,3 +14,4 @@ export async function getAllMembers(communityAddress: string) {
   console.log(allMembers);
   return allMembers;
 }
+export const CurrentUserContext = createContext({} as object);
