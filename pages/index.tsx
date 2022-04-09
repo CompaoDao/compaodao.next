@@ -7,30 +7,16 @@ import { getAllMembers } from "../util/skillwallet";
 import { postPayrollToIPFS } from "../util/IPFS";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Landing from "../components/Landing/Landing";
+
 
 const Home: NextPage = () => {
-  console.log("sessionstorage");
 
   const communityAddress =
     typeof window !== "undefined" &&
     window.sessionStorage.getItem("skillWallet") &&
     JSON.parse(window.sessionStorage.getItem("skillWallet") as string)
       .partnersAgreementKey.communityAddress;
-
-  useEffect(() => {
-    async function load() {
-      // Prompt user for account connections
-      const provider = new ethers.providers.Web3Provider(
-        window.ethereum,
-        "any"
-      );
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-      console.log("Account:", await signer.getAddress());
-      const tmp = window.sessionStorage.getItem("skillWallet");
-    }
-    load();
-  });
 
   //isCoreTeamMember -> can edit hires or not
 
@@ -42,14 +28,12 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div
-          onClick={() => {
-            postPayrollToIPFS("0xxx", "1000", "today");
-          }}
-        />
         <ToastContainer />
-        <button onClick={ () => toast.success("Success")}>Success!</button>
-        <button onClick={ () => toast.error("Error!")}>Error!</button>
+        {/* TODO: Implement toast in this way for API requests */}
+        {/* <button onClick={ () => toast.success("Success")}>Success!</button>
+        <button onClick={ () => toast.error("Error!")}>Error!</button> */}
+
+        <Landing />
       </main>
     </div>
   );
