@@ -30,10 +30,10 @@ const Landing = () => {
       <div className="landing-jumbotron">
         <div className="landing-jumbotron-container">
           <div className="landing-jumbotron-main">
-            Crypto Invoice Generator For Digital Assets
+            Crypto Payment and Invoice Generator
           </div>
           <div className="landing-jumbotron-description">
-            Automate your business cashflow with crypto invoices, salaries, and expenses
+            Automate your business payments with crypto and generate insights
           </div>
           <div className="landing-jumbotron-buttons">
             <div className="landing-jumbotron-buttons-wallet">
