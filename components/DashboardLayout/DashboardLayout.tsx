@@ -11,21 +11,21 @@ import { CurrentUserContext } from "../../util/skillwallet";
 import Button from "../Button/Button";
 
 const DashboardLayout = ({ menu, setMenu, children }) => {
-  const [currentUser, setCurrentUser] = useState({} as object);
+  const [currentUser, setCurrentUser] = useState(undefined);
   useEffect(() => {
     InitSwAuth();
-  });
+  }, []);
+  useEffect(() => {
+    typeof window !== undefined &&
+      setCurrentUser(
+        window.sessionStorage.getItem("skillWallet") &&
+          JSON.parse(window.sessionStorage.getItem("skillWallet") as string)
+      );
+  }, [typeof window !== undefined]);
   useEffect(() => {
     function handleStorage(e: Event) {
       // When local storage changes, dump the list to
       // the console.
-      typeof window !== "undefined" &&
-        console.log(
-          "hufen",
-          window.sessionStorage.getItem("skillWallet") &&
-            JSON.parse(window.sessionStorage.getItem("skillWallet") as string)
-              .partnersAgreementKey.communityAddress
-        );
       setCurrentUser(
         window.sessionStorage.getItem("skillWallet") &&
           JSON.parse(window.sessionStorage.getItem("skillWallet") as string)
