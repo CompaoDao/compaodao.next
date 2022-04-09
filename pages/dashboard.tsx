@@ -35,7 +35,7 @@ const Dashboard: NextPage = () => {
     <div>
       <Head>
         <title>Dashboard</title>
-        <meta name="description" content="Dashboard" />
+        <meta name="description" content="Dashb oard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
