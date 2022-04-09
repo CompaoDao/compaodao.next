@@ -9,8 +9,13 @@ import {
   Title,
   Tooltip,
   Legend,
+  PointElement,
+  LineElement
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
+import { getWalletAddress } from "../../util/skillwallet";
+import { getHourlyInflow, getHourlyOutflow, getSumForPeriod, PeriodFlow } from "../../util/streams";
+import moment from 'moment';
 
 ChartJS.register(
   CategoryScale,
@@ -18,7 +23,9 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  PointElement,
+  LineElement
 );
 
 export const options = {
@@ -34,41 +41,55 @@ export const options = {
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-const data = {
-  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-  datasets: [{
-    label: '# of Votes',
-    data: [12, 19, 3, 5, 2, 3],
-    backgroundColor: [
-      'rgba(255, 99, 132, 0.2)',
-      'rgba(54, 162, 235, 0.2)',
-      'rgba(255, 206, 86, 0.2)',
-      'rgba(75, 192, 192, 0.2)',
-      'rgba(153, 102, 255, 0.2)',
-      'rgba(255, 159, 64, 0.2)'
-    ],
-    borderColor: [
-      'rgba(255, 99, 132, 1)',
-      'rgba(54, 162, 235, 1)',
-      'rgba(255, 206, 86, 1)',
-      'rgba(75, 192, 192, 1)',
-      'rgba(153, 102, 255, 1)',
-      'rgba(255, 159, 64, 1)'
-    ],
-    borderWidth: 1
-  }]
-}
-
-
 const Dashboard = () => {
   const { currentUser } = useContext(AuthContext);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [flow, setFlow] = useState([]);
+  const [total, setTotal] = useState(0);
+
+  const isCoreTeamMember = currentUser?.isCoreTeamMember;
 
   useEffect(() => {
-    // Fetch data for dashboard
+    if(currentUser) {
+      getFlowData();
+      getTotalData();
+    }
   }, [currentUser]);
+
+  const getTotalData = async () => {
+    const address = await getWalletAddress();
+    const oneYearAgo = moment().subtract(1, 'year').format('YYYY-MM-DD');
+    const totalData = Number(await getSumForPeriod(address, new Date(oneYearAgo), new Date(), isCoreTeamMember));
+    setTotal(totalData);
+  }
+
+  const getFlowData = async () => {
+    setIsLoading(true);
+    const address = await getWalletAddress();
+    const flowData = isCoreTeamMember
+      ? await getHourlyOutflow(address)
+      : await getHourlyInflow(address);
+
+    const currency = flowData[0].currency;
+    const labels = flowData.map(flow => moment(flow.start).format("LT"));
+    const dataPoints = flowData.map(flow => Number(flow.sum));
+
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: isCoreTeamMember ? `Burn Rate in ${currency}` : `Income in ${currency}`,
+          data: dataPoints,
+          fill: true,
+          backgroundColor: "##41A8F2",
+          borderColor: "#147eca"
+        }
+      ]
+    };
+
+    setFlow(data);
+    setIsLoading(false);
+  };
 
   if(isLoading) {
     return <Loading />
@@ -76,15 +97,28 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <div className="dashboard-title">Total Amount in Payments</div>
-      <Bar
-          data={data}
+      <div className="dashboard-total-container">
+        <div className="dashboard-title">{`One Year Cumulative ${isCoreTeamMember ? `Spend` : `Income`}: `}</div>
+        <div className="dashboard-total">{total}</div>
+      </div>
+      <div className="dashboard-line_graph">
+        <div className="dashboard-title">
+          {`${isCoreTeamMember ? `Burn Rate` : `Income`} in the Past 12 Hours`}
+        </div>
+        <Line
+          data={flow}
           width={400}
           height={200}
           options={{
-            maintainAspectRatio: true
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top' as const,
+              },
+            },
           }}
         />
+      </div>
     </div>
   )
 };

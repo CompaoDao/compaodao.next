@@ -11,6 +11,16 @@ const provider = new ethers.providers.AlchemyProvider(
   "TLPI2cNQ21vuiwGs2X1HaUJxt-ZwnOFx"
 );
 
+export async function getWalletAddress() {
+  const provider = new ethers.providers.Web3Provider(
+    window.ethereum,
+    "any"
+  );
+  await provider.send("eth_requestAccounts", []);
+  const signer = provider.getSigner();
+  return await signer.getAddress();
+}
+
 export async function getAllMemberAddresses(communityAddress: string) {
   const contract = new ethers.Contract(communityAddress, community.abi, provider);
 

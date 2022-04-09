@@ -5,13 +5,8 @@ import PayrollIcon from "../../assets/icons/PayrollIcon";
 import TransactionsIcon from "../../assets/icons/TransactionsIcon";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Menu } from "../../pages/dashboard";
-import { CurrentUserContext } from "../../util/skillwallet";
-import { truncateWallet } from "../../util/truncateWallet";
-import Button from "../Button/Button";
-import Modal from "../Modal/Modal";
 
 const DashboardLayout = ({ menu, setMenu, children }) => {
-  // const [modalIsOpen, setIsOpen] = useState(false);
   const { currentUser } = useContext(AuthContext);
   return (
     <>
@@ -32,7 +27,7 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
               </div>
               <div className="left_panel-center-menu-text">
                 {currentUser && (currentUser! as any).isCoreTeamMember
-                  ? "Burnrate"
+                  ? "Burn Rate"
                   : "Income"}
               </div>
             </div>
@@ -70,12 +65,20 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
           <div className="right_panel-header">
             <div className="right_panel-header-title">
               {menu === Menu.DASHBOARD
-                ? currentUser && (currentUser! as any).isCoreTeamMember
-                  ? "Burnrate"
+                ? (currentUser! as any)?.isCoreTeamMember
+                  ? "Burn Rate"
                   : "Income"
                 : menu === Menu.SALARIES
-                ? "Salaries"
-                : "Payslips"}
+                  ? "Salaries"
+                  : "Payslips"
+                }
+            </div>
+            <div className="right_panel-header-button">
+              {/* {menu === Menu.SALARIES && (
+                <Button onClick={() => setIsOpen(true)}>
+                  + Add new employee
+                </Button>
+              )} */}
             </div>
           </div>
           <div className="right_panel-content-container">

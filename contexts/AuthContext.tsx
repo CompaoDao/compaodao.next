@@ -1,6 +1,5 @@
 import React, {createContext, useState} from 'react';
 
-
 // undefined as | undefined | { partnersAgreementKey: { communityAddress: string } }
 export const AuthContext = createContext({
   currentUser: undefined,
