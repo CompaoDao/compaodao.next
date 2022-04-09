@@ -5,13 +5,11 @@ import { useEffect } from "react";
 import * as ethers from "ethers";
 import { getAllMembers } from "../util/skillwallet";
 import { postPayrollToIPFS } from "../util/IPFS";
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Landing from "../components/Landing/Landing";
 
 
 const Home: NextPage = () => {
-
   const communityAddress =
     typeof window !== "undefined" &&
     window.sessionStorage.getItem("skillWallet") &&
@@ -28,11 +26,6 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <ToastContainer />
-        {/* TODO: Implement toast in this way for API requests */}
-        {/* <button onClick={ () => toast.success("Success")}>Success!</button>
-        <button onClick={ () => toast.error("Error!")}>Error!</button> */}
-
         <Landing />
       </main>
     </div>
