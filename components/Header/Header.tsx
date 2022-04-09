@@ -25,7 +25,6 @@ const Header = () => {
       const user =
         window.sessionStorage.getItem("skillWallet") &&
         JSON.parse(window.sessionStorage.getItem("skillWallet") as string);
-      // debugger;
       // When local storage changes, dump the list to
       // the console.
       setCurrentUser(user);

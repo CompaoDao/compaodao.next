@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { AuthContextProvider } from "../contexts/AuthContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  console.log("test");
   return (
     <AuthContextProvider>
       <ToastContainer />
