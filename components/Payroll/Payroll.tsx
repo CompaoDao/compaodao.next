@@ -1,38 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import {
   CurrentUserContext,
   getAllMemberAddresses,
-  getAllMembers,
+  getMembersData,
+  getTokenIdByAddress,
+  getUserByTokenId,
+  getUserData,
+  user,
 } from "../../util/skillwallet";
-
-const samplePayrollData = [
-  {
-    id: 1,
-    position: "CEO",
-    name: "Drew Smith",
-    compensation: "$300,000",
-  },
-  {
-    id: 2,
-    position: "CEO",
-    name: "Drew Smith",
-    compensation: "$300,000",
-  },
-  {
-    id: 3,
-    position: "CEO",
-    name: "Drew Smith",
-    compensation: "$300,000",
-  },
-  {
-    id: 4,
-    position: "COO",
-    name: "Michael Smith",
-    compensation: "$200,000",
-  },
-];
+async function getPayroll(currentUser: user) {
+  const memberAddresses = await getAllMemberAddresses(
+    currentUser!.partnersAgreementKey.communityAddress
+  );
+  const memberData = await getMembersData(memberAddresses);
+  const comp = ["??", "??", "??", "??"]; //await getComp(memberAddresses) TODO IMPLEMENT
+  return memberData.map((member, index) => {
+    return { ...member, compensation: comp[index] };
+  });
+}
 interface payroll {
-  id: number;
+  id: string;
   position: string;
   name: string;
   compensation: string;
@@ -42,15 +30,18 @@ const PayrollTable = () => {
   const [payrollData, setPayrollData] = useState([] as payroll[]);
   const [initializing, setInitiliazing] = useState(true);
   useEffect(() => {
-    async function loadMembers() {
-      const memberAddresses = await getAllMemberAddresses(
-        currentUser!.partnersAgreementKey.communityAddress
-      );
-      //get salary with membershipid -> ULAD
-      console.log("members", memberAddresses);
-      // setPayrollData({});
+    if (currentUser) {
+      const loadData = getPayroll(currentUser);
+      toast.promise(loadData, {
+        pending: "Fetching payroll data",
+        success: "Loaded successfully",
+        error: "Error",
+      });
+      loadData.then((payroll) => {
+        setPayrollData(payroll);
+        setInitiliazing(false);
+      });
     }
-    if (currentUser) loadMembers();
   }, [currentUser]);
   if (!initializing) {
     return (
@@ -61,7 +52,7 @@ const PayrollTable = () => {
           <td className="content_table-fields-field">Compensation</td>
           <td className="content_table-fields-field">Action</td>
         </tr>
-        {samplePayrollData.map((payroll) => (
+        {payrollData.map((payroll) => (
           <tr key={payroll.id} className="content_table-row">
             <td className="content_table-row-standard">{payroll.position}</td>
             <td className="content_table-row-standard">{payroll.name}</td>

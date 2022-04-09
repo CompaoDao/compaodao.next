@@ -1,3 +1,4 @@
+import axios from "axios";
 import * as ethers from "ethers";
 import { createContext } from "react";
 import community from "../abis/Community.json";
@@ -13,7 +14,7 @@ export async function getAllMemberAddresses(communityAddress: string) {
   console.log("idn", await provider.getNetwork());
   const allMembers = await contract.getMemberAddresses();
   console.log(allMembers);
-  return allMembers;
+  return allMembers as string[];
 }
 export async function getTokenIdByAddress(address: string) {
   const SkillWalletContractAddress =
@@ -25,17 +26,35 @@ export async function getTokenIdByAddress(address: string) {
   );
   let contract = new ethers.Contract(
     SkillWalletContractAddress,
-    Skil.abi,
+    skillwalletid.abi,
     provider
   );
-  console.log("mmd", contract);
-  console.log("idn", await provider.getNetwork());
-  const allMembers = await contract.getMemberAddresses();
-  console.log(allMembers);
-  return allMembers;
+  const tokenId = await contract.getSkillWalletIdByOwner(address);
+  console.log(tokenId);
+  return tokenId;
 }
-export const CurrentUserContext = createContext(
-  undefined as
-    | undefined
-    | { partnersAgreementKey: { communityAddress: string } }
-);
+export async function getUserByTokenId(tokenId: string) {
+  const url = `https://dev-api.skillwallet.id/api/skillwallet?tokenId=${tokenId}`;
+  const resp = await axios.get(url);
+  return resp.data;
+}
+export interface user {
+  partnersAgreementKey: { communityAddress: string };
+}
+export const CurrentUserContext = createContext(undefined as undefined | user);
+export async function getMembersData(memberAddresses: string[]) {
+  const payroll = await Promise.all(
+    memberAddresses.map(async (address) => {
+      const tokenId = await getTokenIdByAddress(address);
+      const user = await getUserByTokenId(tokenId);
+
+      return {
+        id: address,
+        position: user.skills[0].name,
+        name: user.nickname,
+      };
+    })
+  );
+  console.log(payroll);
+  return payroll;
+}
