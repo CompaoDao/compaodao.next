@@ -34,29 +34,29 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
             <div
               className="left_panel-center-menu"
               style={{
-                backgroundColor: menu === Menu.PAYROLL ? "#41A8F2" : "white",
-                color: menu === Menu.PAYROLL ? "white" : "black",
+                backgroundColor: menu === Menu.SALARIES ? "#41A8F2" : "white",
+                color: menu === Menu.SALARIES ? "white" : "black",
               }}
-              onClick={() => setMenu(Menu.PAYROLL)}
+              onClick={() => setMenu(Menu.SALARIES)}
             >
               <div className="left_panel-center-menu-icon">
                 <PayrollIcon color="white" />
               </div>
-              <div className="left_panel-center-menu-text">Payroll</div>
+              <div className="left_panel-center-menu-text">Salaries</div>
             </div>
             <div
               className="left_panel-center-menu"
               style={{
                 backgroundColor:
-                  menu === Menu.TRANSACTIONS ? "#41A8F2" : "white",
-                color: menu === Menu.TRANSACTIONS ? "white" : "black",
+                  menu === Menu.PAYSLIPS ? "#41A8F2" : "white",
+                color: menu === Menu.PAYSLIPS ? "white" : "black",
               }}
-              onClick={() => setMenu(Menu.TRANSACTIONS)}
+              onClick={() => setMenu(Menu.PAYSLIPS)}
             >
               <div className="left_panel-center-menu-icon">
                 <TransactionsIcon color="white" />
               </div>
-              <div className="left_panel-center-menu-text">Transactions</div>
+              <div className="left_panel-center-menu-text">Payslips</div>
             </div>
           </div>
           <div className="left_panel-bottom"></div>
@@ -67,12 +67,13 @@ const DashboardLayout = ({ menu, setMenu, children }) => {
             <div className="right_panel-header-title">
               {menu === Menu.DASHBOARD
                 ? "Dashboard"
-                : menu === Menu.PAYROLL
-                ? "Salaries"
-                : "Payslips"}
+                : menu === Menu.SALARIES
+                  ? "Salaries"
+                  : "Payslips"
+                }
             </div>
             <div className="right_panel-header-button">
-              {menu === Menu.PAYROLL && (
+              {menu === Menu.SALARIES && (
                 <Button onClick={() => setIsOpen(true)}>
                   + Add new employee
                 </Button>
