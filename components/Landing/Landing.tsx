@@ -60,20 +60,20 @@ const Landing = () => {
           Second
         </div>
         <div className="landing-point-description">
-          {`Add a payroll with recipient's wallet address`}
+          {`Automatically generate invoices of payments`}
         </div>
         <div>
-          <img className="landing-point-image" src="/point-two.png" />
+          <img className="landing-point-image" src="/point-three.png" />
         </div>
 
         <div className="landing-point-number">
           Third
         </div>
         <div className="landing-point-description">
-          {`Add a payroll with recipient's wallet address`}
+          {`View a high level dashboard for employee payments`}
         </div>
         <div>
-          <img className="landing-point-image" src="/point-three.png" />
+          <img className="landing-point-image" src="/point-two.png" />
         </div>
       </div>
       
