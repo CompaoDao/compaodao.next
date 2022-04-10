@@ -60,8 +60,8 @@ const Dashboard = () => {
   const getTotalData = async () => {
     setTotalLoading(true);
     const address = await getWalletAddress();
-    const oneYearAgo = moment().subtract(1, 'year').format('YYYY-MM-DD');
-    const totalData = Number(await getSumForPeriod(address, new Date(oneYearAgo), new Date(), isCoreTeamMember));
+    const oneDayAgo = moment().subtract(1, 'day').format('YYYY-MM-DD');
+    const totalData = Number(await getSumForPeriod(address, new Date(oneDayAgo), new Date(), isCoreTeamMember));
     setTotal(totalData);
     setTotalLoading(false);
   }
@@ -101,7 +101,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="dashboard-total-container">
-        <div className="dashboard-title">{`One Year Cumulative ${isCoreTeamMember ? `Spend` : `Income`}: `}</div>
+        <div className="dashboard-title">{`One Day Cumulative ${isCoreTeamMember ? `Spend` : `Income`}: `}</div>
         <div className="dashboard-total">{`${total} DAIx`}</div>
       </div>
       <div className="dashboard-line_graph">

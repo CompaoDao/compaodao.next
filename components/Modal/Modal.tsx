@@ -64,7 +64,7 @@ const Modal = ({
     >
       <div className="modal-container">
         <div className="modal-header">
-          <div className="modal-header-title">Add to Payroll</div>
+          <div className="modal-header-title">Change Salary</div>
           <div className="modal-header-close" onClick={() => closeModal()}>
             <CloseIcon />
           </div>
@@ -94,7 +94,7 @@ const Modal = ({
         </div> */}
 
         <div className="modal-form-row">
-          <div className="modal-form-row-label">Compensation:</div>
+          <div className="modal-form-row-label">{`Salary (DAIx): `}</div>
           <input
             className="modal-form-row-input"
             type="text"
@@ -108,7 +108,7 @@ const Modal = ({
           <input
             className="modal-form-submit"
             type="submit"
-            value="Add to payroll"
+            value="Confirm"
             disabled={!isValid}
             style={{ opacity: isValid ? 1 : 0.2 }}
           />
