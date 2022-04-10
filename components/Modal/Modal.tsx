@@ -3,7 +3,7 @@ import ReactModal from "react-modal";
 import { toast } from "react-toastify";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import { createFlow, updateFlow } from "../../util/superfluid";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 
 const Modal = ({
   modalIsOpen,
@@ -31,7 +31,7 @@ const Modal = ({
     setTempCompensation(compensation);
     console.log("comp", compensation);
     console.log("comp", recipient);
-    const weiPerSecond = ethers.utils.parseEther((Number(compensation) / 3600).toFixed(18)).toString();
+    const weiPerSecond = ethers.utils.parseEther(compensation).div(BigNumber.from(3600)).toString();
     const updating =
       currentCompensation != "0"
         ? updateFlow(
