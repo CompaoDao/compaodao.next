@@ -1,6 +1,7 @@
 import { Framework } from "@superfluid-finance/sdk-core";
 import { ethers } from "ethers";
 import Operation from "@superfluid-finance/sdk-core/dist/main/Operation";
+import divide from "divide-bigint";
 
 export const createFlow = async (recipient: string, superToken: string, flowRate: string) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -55,7 +56,7 @@ export const updateFlow = async (recipient: string, superToken: string, newFlowR
     }
 }
 
-export const getFlowRate = async (recipient: string, superToken: string) => {
+export const getFlowRate = async (account: string, superToken: string) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const sf = await Framework.create({
         chainId: 80001,
@@ -63,14 +64,13 @@ export const getFlowRate = async (recipient: string, superToken: string) => {
     });
 
     try {
-        const flow = await sf.cfaV1.getFlow({
+        const flow = await sf.cfaV1.getAccountFlowInfo({
             superToken: superToken,
-            sender: await provider.getSigner().getAddress(),
-            receiver: recipient,
+            account: account,
             providerOrSigner: provider
         });
 
-        return flow.flowRate;
+        return divide(BigInt(flow.flowRate), 10 ** 18).toFixed(5);
     } catch (error) {
         console.error(error);
     }
