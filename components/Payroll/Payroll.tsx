@@ -24,7 +24,7 @@ async function getPayroll(currentUser: user) {
         member.id,
         "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f"
       );
-      return { ...member, compensation: comp * 3600 };
+      return { ...member, compensation: (comp * 3600).toFixed(6) };
     })
   );
 }
