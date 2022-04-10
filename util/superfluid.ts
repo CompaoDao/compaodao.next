@@ -70,7 +70,7 @@ export const getFlowRate = async (account: string, superToken: string) => {
             providerOrSigner: provider
         });
 
-        return divide(BigInt(flow.flowRate), 10 ** 18).toFixed(5);
+        return divide(BigInt(flow.flowRate), 10 ** 18).toFixed(6);
     } catch (error) {
         console.error(error);
     }
