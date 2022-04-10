@@ -1,5 +1,5 @@
 import { Framework } from "@superfluid-finance/sdk-core";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import Operation from "@superfluid-finance/sdk-core/dist/main/Operation";
 import divide from "divide-bigint";
 

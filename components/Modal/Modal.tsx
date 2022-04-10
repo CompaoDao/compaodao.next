@@ -3,6 +3,7 @@ import ReactModal from "react-modal";
 import { toast } from "react-toastify";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import { createFlow, updateFlow } from "../../util/superfluid";
+import { BigNumber, ethers } from "ethers";
 
 const Modal = ({
   modalIsOpen,
@@ -30,17 +31,18 @@ const Modal = ({
     setTempCompensation(compensation);
     console.log("comp", compensation);
     console.log("comp", recipient);
+    const weiPerSecond = ethers.utils.parseEther(compensation).div(BigNumber.from(3600)).toString();
     const updating =
       currentCompensation != "0"
         ? updateFlow(
             recipient,
             "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
-            compensation
+            weiPerSecond
           )
         : createFlow(
             recipient,
             "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
-            compensation
+            weiPerSecond
           );
     toast.promise(updating, {
       pending: "Updating compensation",
@@ -94,7 +96,7 @@ const Modal = ({
         </div> */}
 
         <div className="modal-form-row">
-          <div className="modal-form-row-label">{`Salary (DAIx): `}</div>
+          <div className="modal-form-row-label">{`Salary (DAIx/hour): `}</div>
           <input
             className="modal-form-row-input"
             type="text"

@@ -24,7 +24,7 @@ async function getPayroll(currentUser: user) {
         member.id,
         "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f"
       );
-      return { ...member, compensation: comp };
+      return { ...member, compensation: comp * 3600 };
     })
   );
 }
@@ -108,7 +108,7 @@ const PayrollTable = () => {
           <tr className="content_table-fields">
             <td className="content_table-fields-field">Position</td>
             <td className="content_table-fields-field">Name</td>
-            <td className="content_table-fields-field">Salary (DAIx)</td>
+            <td className="content_table-fields-field">Salary (DAIx/hour)</td>
             {(currentUser! as any).isCoreTeamMember && (
               <td className="content_table-fields-field">Action</td>
             )}
