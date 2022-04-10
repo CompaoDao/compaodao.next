@@ -108,7 +108,7 @@ const PayrollTable = () => {
           <tr className="content_table-fields">
             <td className="content_table-fields-field">Position</td>
             <td className="content_table-fields-field">Name</td>
-            <td className="content_table-fields-field">Salary</td>
+            <td className="content_table-fields-field">Salary (DAIx)</td>
             {(currentUser! as any).isCoreTeamMember && (
               <td className="content_table-fields-field">Action</td>
             )}
