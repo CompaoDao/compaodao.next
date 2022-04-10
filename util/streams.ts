@@ -1,4 +1,5 @@
 import { createClient } from 'urql'
+import divide from 'divide-bigint'
 
 const client = createClient({
   url: 'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-mumbai',
@@ -6,7 +7,7 @@ const client = createClient({
 
 export type PeriodFlow = {
   start: Date,
-  sum: bigint,
+  sum: number,
   currency: string,
 }
 
@@ -22,7 +23,7 @@ export const getHourlyOutflow = async (account: string) => {
     periods.push({
       start: new Date(date),
       sum: await getSumForPeriod(account, date, periodEndDate, true),
-      currency: 'fDAIx'
+      currency: 'DAIx'
     });
 
     date.setHours(date.getHours() + 1);
@@ -43,7 +44,7 @@ export const getHourlyInflow = async (account: string) => {
     periods.push({
       start: new Date(date),
       sum: await getSumForPeriod(account, date, periodEndDate, false),
-      currency: 'fDAIx'
+      currency: 'DAIx'
     });
 
     date.setHours(date.getHours() + 1);
@@ -52,7 +53,7 @@ export const getHourlyInflow = async (account: string) => {
   return periods;
 }
 
-export const getSumForPeriod = async (account: string, start: Date, end: Date, outgoing: boolean) => {
+export const getSumForPeriod = async (account: string, start: Date, end: Date, outgoing: boolean): Promise<number> => {
   const startInSeconds = Math.floor(start.getTime() / 1000);
   const endInSeconds = Math.floor(end.getTime() / 1000);
 
@@ -112,5 +113,5 @@ export const getSumForPeriod = async (account: string, start: Date, end: Date, o
     })
     .reduce((prevValue: bigint, currentValue: bigint) => prevValue + currentValue, BigInt(0));
 
-  return sumForEndedPeriods + sumForUnfinishedPeriods;
+  return divide(sumForEndedPeriods + sumForUnfinishedPeriods, 10 ** 18).toFixed(6);
 }
