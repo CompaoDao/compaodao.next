@@ -31,7 +31,7 @@ const Modal = ({
     setTempCompensation(compensation);
     console.log("comp", compensation);
     console.log("comp", recipient);
-    const weiPerSecond = ethers.utils.parseEther((Number(compensation) / 3600).toString()).toString();
+    const weiPerSecond = ethers.utils.parseEther((Number(compensation) / 3600).toFixed(18)).toString();
     const updating =
       currentCompensation != "0"
         ? updateFlow(
