@@ -3,6 +3,7 @@ import ReactModal from "react-modal";
 import { toast } from "react-toastify";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import { createFlow, updateFlow } from "../../util/superfluid";
+import { ethers } from "ethers";
 
 const Modal = ({
   modalIsOpen,
@@ -30,18 +31,18 @@ const Modal = ({
     setTempCompensation(compensation);
     console.log("comp", compensation);
     console.log("comp", recipient);
-    const weiPerSecond = BigInt(Number(compensation) / 3600) * BigInt(10 ** 18);
+    const weiPerSecond = ethers.utils.parseEther((Number(compensation) / 3600).toString()).toString();
     const updating =
       currentCompensation != "0"
         ? updateFlow(
             recipient,
             "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
-            weiPerSecond.toString()
+            weiPerSecond
           )
         : createFlow(
             recipient,
             "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
-            weiPerSecond.toString()
+            weiPerSecond
           );
     toast.promise(updating, {
       pending: "Updating compensation",
