@@ -23,7 +23,7 @@ export const getHourlyOutflow = async (account: string) => {
     periods.push({
       start: new Date(date),
       sum: await getSumForPeriod(account, date, periodEndDate, true),
-      currency: 'fDAIx'
+      currency: 'DAIx'
     });
 
     date.setHours(date.getHours() + 1);
@@ -44,7 +44,7 @@ export const getHourlyInflow = async (account: string) => {
     periods.push({
       start: new Date(date),
       sum: await getSumForPeriod(account, date, periodEndDate, false),
-      currency: 'fDAIx'
+      currency: 'DAIx'
     });
 
     date.setHours(date.getHours() + 1);
