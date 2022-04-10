@@ -30,17 +30,18 @@ const Modal = ({
     setTempCompensation(compensation);
     console.log("comp", compensation);
     console.log("comp", recipient);
+    const weiPerSecond = BigInt(Number(compensation) / 3600) * BigInt(10 ** 18);
     const updating =
       currentCompensation != "0"
         ? updateFlow(
             recipient,
             "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
-            compensation
+            weiPerSecond.toString()
           )
         : createFlow(
             recipient,
             "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
-            compensation
+            weiPerSecond.toString()
           );
     toast.promise(updating, {
       pending: "Updating compensation",
@@ -94,7 +95,7 @@ const Modal = ({
         </div> */}
 
         <div className="modal-form-row">
-          <div className="modal-form-row-label">{`Salary (DAIx): `}</div>
+          <div className="modal-form-row-label">{`Salary (DAIx/hour): `}</div>
           <input
             className="modal-form-row-input"
             type="text"
