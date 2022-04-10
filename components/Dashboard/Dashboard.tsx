@@ -102,7 +102,7 @@ const Dashboard = () => {
     <div className="dashboard">
       <div className="dashboard-total-container">
         <div className="dashboard-title">{`One Year Cumulative ${isCoreTeamMember ? `Spend` : `Income`}: `}</div>
-        <div className="dashboard-total">{total}</div>
+        <div className="dashboard-total">{`${total} DAIx`}</div>
       </div>
       <div className="dashboard-line_graph">
         <div className="dashboard-title">

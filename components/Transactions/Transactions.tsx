@@ -74,7 +74,7 @@ const TransactionsTable = () => {
           <tr className="content_table-fields">
             <td className="content_table-fields-field">Name</td>
             <td className="content_table-fields-field">Date</td>
-            <td className="content_table-fields-field">Paid (wei/day)</td>
+            <td className="content_table-fields-field">Paid in last 24 hours (DAIx)</td>
             <td className="content_table-fields-field">Invoice</td>
           </tr>
           {transactionData.map(
