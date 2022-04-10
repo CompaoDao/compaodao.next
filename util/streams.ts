@@ -12,28 +12,16 @@ export type PeriodFlow = {
 }
 
 export const getHourlyOutflow = async (account: string) => {
-  let date = new Date();
-  date.setHours(date.getHours() - 11, 0, 0, 0);
-
-  const periods: PeriodFlow[] = [];
-  while (date <= new Date()) {
-    let periodEndDate = new Date(date);
-    periodEndDate.setHours(date.getHours() + 1);
-
-    periods.push({
-      start: new Date(date),
-      sum: await getSumForPeriod(account, date, periodEndDate, true),
-      currency: 'DAIx'
-    });
-
-    date.setHours(date.getHours() + 1);
-  }
-
-  return periods;
+  return getHourlyFlow(account, true);
 }
 
 export const getHourlyInflow = async (account: string) => {
+  return getHourlyFlow(account, false);
+}
+
+const getHourlyFlow = async (account: string, outgoing: boolean) => {
   let date = new Date();
+  let endDate = new Date();
   date.setHours(date.getHours() - 11, 0, 0, 0);
 
   const periods: PeriodFlow[] = [];
@@ -43,7 +31,7 @@ export const getHourlyInflow = async (account: string) => {
 
     periods.push({
       start: new Date(date),
-      sum: await getSumForPeriod(account, date, periodEndDate, false),
+      sum: await getSumForPeriod(account, date, endDate < periodEndDate ? endDate : periodEndDate, outgoing),
       currency: 'DAIx'
     });
 
